@@ -1,8 +1,1295 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <title>Nowawes</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nowawes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=EB+Garamond:ital@0;1&family=Anton&family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f1ea;
+    /* Diese beiden Werte werden zusätzlich per JS gesetzt (siehe TIMING-Objekt),
+       damit CSS-Animationsdauer und JS-Timeouts nie auseinanderdriften. */
+    --iris-duration: 9800ms;
+    --flash-duration: 420ms;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    width:100%; height:100%;
+    background:#000;
+    overflow:hidden;
+    font-family:'Courier New', Courier, monospace;
+  }
+
+  /* Registrierte Custom Property: macht --iris-r zwischen Keyframes weich
+     interpolierbar (normale Custom Properties springen sonst nur). */
+  @property --iris-r{
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+  }
+
+  /* ---------- INTRO STAGE ---------- */
+  #intro{
+    position:fixed; inset:0;
+    background:#0c0906;
+    z-index:1000;
+    /* Zentrale Übergänge einmal definiert statt in mehreren Klassen doppelt -
+       so überschreiben sich .modern/.exiting/.invert nicht gegenseitig. */
+    transition: opacity 0.18s ease, background 0.05s linear, filter 0.05s linear;
+  }
+  #intro.hidden{ display:none; }
+
+  /* Grund-Flackern (Kontrast/Helligkeit) läuft rein per CSS, nicht mehr per
+     JS-RAF-Loop. steps(1,end) erzeugt harte Sprünge statt weicher Überblendung
+     - das wirkt für einen Flacker-Effekt authentischer als eine Ease-Kurve. */
+  #intro:not(.modern){
+    animation: filmGrade 1.9s steps(1,end) infinite;
+  }
+  @keyframes filmGrade{
+    0%   { filter: sepia(0.55) saturate(1.3) contrast(1.15) brightness(0.88); }
+    9%   { filter: sepia(0.55) saturate(1.3) contrast(1.32) brightness(1.06); }
+    18%  { filter: sepia(0.55) saturate(1.3) contrast(1.20) brightness(0.93); }
+    29%  { filter: sepia(0.55) saturate(1.3) contrast(1.38) brightness(1.12); }
+    41%  { filter: sepia(0.55) saturate(1.3) contrast(1.18) brightness(0.90); }
+    55%  { filter: sepia(0.55) saturate(1.3) contrast(1.28) brightness(1.02); }
+    68%  { filter: sepia(0.55) saturate(1.3) contrast(1.22) brightness(0.95); }
+    82%  { filter: sepia(0.55) saturate(1.3) contrast(1.34) brightness(1.09); }
+    100% { filter: sepia(0.55) saturate(1.3) contrast(1.15) brightness(0.88); }
+  }
+
+  /* Iris - die charakteristische Kreisblende des frühen Stummfilms.
+     Läuft über eine Alpha-Maske (mask-image) statt eines box-shadow mit
+     9999px Spread: das ist GPU-beschleunigt und erzwingt keine teuren
+     Neuberechnungen der Malfläche bei jedem Animationsschritt. */
+  .iris-mask{
+    position:absolute; inset:0;
+    background:#000;
+    z-index:16;
+    pointer-events:none;
+    --iris-r: 0%;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0%, transparent var(--iris-r), black var(--iris-r), black 100%);
+    mask-image: radial-gradient(circle at 50% 50%, transparent 0%, transparent var(--iris-r), black var(--iris-r), black 100%);
+    animation: iris var(--iris-duration) cubic-bezier(.65,0,.35,1) forwards;
+  }
+  @keyframes iris{
+    0%   { --iris-r: 0%; }
+    7%   { --iris-r: 100%; }
+    95%  { --iris-r: 100%; }
+    100% { --iris-r: 0%; }
+  }
+
+  /* Sprocket holes, left/right film-strip edges - laufen kontinuierlich durch,
+     als würde der Filmstreifen durchs Projektorfenster gezogen */
+  .sprockets{
+    position:absolute; top:0; bottom:0; width:56px;
+    overflow:hidden;
+    background:#000;
+    z-index:5;
+  }
+  .sprockets.left{ left:0; }
+  .sprockets.right{ right:0; }
+  .sprockets .track{
+    position:absolute;
+    left:0; right:0; top:0;
+    display:flex; flex-direction:column; align-items:center;
+    gap:26px;
+    padding-top:26px;
+    animation: reel-run 0.9s linear infinite;
+  }
+  .sprockets span{
+    flex:0 0 auto;
+    width:26px; height:34px;
+    background:#14100a;
+    border:2px solid #2a2015;
+    border-radius:4px;
+  }
+  @keyframes reel-run{
+    from{ transform:translateY(0); }
+    to{ transform:translateY(60px); }
+  }
+
+  /* deutlich unruhigeres Bild-Wackeln + Weben, wie bei einer
+     handgekurbelten Kamera um 1911 (unregelmäßige Kurbelgeschwindigkeit) */
+  .frame{
+    position:absolute; inset:0;
+    z-index:1;
+    animation: jitter 0.11s steps(2,end) infinite, weave 1.7s ease-in-out infinite;
+  }
+  @keyframes jitter{
+    0%   { transform: translate(0px,0px) rotate(0deg); }
+    50%  { transform: translate(1.4px,-1.1px) rotate(0.15deg); }
+    100% { transform: translate(-1.2px,1px) rotate(-0.1deg); }
+  }
+  @keyframes weave{
+    0%   { margin-top:0px; }
+    45%  { margin-top:6px; }
+    70%  { margin-top:-3px; }
+    100% { margin-top:0px; }
+  }
+
+  /* ---------- TITELKARTEN ---------- */
+  .title-card{
+    position:absolute; inset:0;
+    z-index:8;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 0.04s linear; /* harter Schnitt wie an einer Filmklebestelle */
+  }
+  .title-card.visible{ opacity:1; }
+  .title-card .place{
+    font-family:'IM Fell English SC', 'Times New Roman', serif;
+    font-size:clamp(38px, 8vw, 92px);
+    letter-spacing:6px;
+    color:#efe3c8;
+    text-shadow:0 0 10px rgba(0,0,0,.5), 0 0 2px rgba(0,0,0,.6);
+  }
+  .title-card.long .place{
+    font-size:clamp(24px, 5.4vw, 54px);
+    letter-spacing:3px;
+  }
+  .title-card .rule{
+    width:min(38vw,320px);
+    height:1px;
+    background:#efe3c8;
+    opacity:.75;
+    margin:18px 0;
+  }
+  .title-card .year{
+    font-family:'EB Garamond', 'Times New Roman', serif;
+    font-style:italic;
+    font-size:clamp(20px, 3vw, 34px);
+    letter-spacing:8px;
+    color:#e6d8b8;
+    text-shadow:0 0 8px rgba(0,0,0,.5);
+  }
+
+  /* ---------- FLASH-SEQUENZ: NULL / DREI ----------
+     Bruch zur Moderne: sobald NULL erscheint, schaltet die ganze Bühne
+     von der Stummfilm-Optik auf einen klaren, flachen Blauton um. */
+  #intro.modern{
+    background:#0f3ee0;
+    filter:none;
+  }
+  #intro.modern .frame{ animation:none; transform:none; margin-top:0; }
+  #intro.modern .grain-css,
+  #intro.modern .vignette,
+  #intro.modern .scratches,
+  #intro.modern .light-leak,
+  #intro.modern .sprockets,
+  #intro.modern .dust,
+  #intro.modern .hair,
+  #intro.modern .flicker,
+  #intro.modern .burn-mark,
+  #intro.modern .iris-mask{
+    display:none;
+  }
+  #intro.modern.invert{ background:#ffffff; }
+  #flashDrei{ color:#0f3ee0; }
+  .flash-text{
+    position:absolute; left:0; right:0;
+    z-index:17;
+    text-align:center;
+    font-family:'Anton', 'Arial Black', sans-serif;
+    letter-spacing:4px;
+    color:#ffffff;
+    opacity:0;
+    pointer-events:none;
+    font-size:clamp(90px, 24vw, 320px);
+  }
+  .flash-text.top{ top:50%; transform:translateY(calc(-100% - 4vh)); }
+  .flash-text.bottom{ top:50%; transform:translateY(4vh); }
+  .flash-text.show{
+    animation: flashPunch var(--flash-duration) cubic-bezier(.15,.9,.25,1) forwards;
+  }
+  .flash-text.cut{
+    animation: none;
+    transition: opacity 0.09s linear;
+    opacity:0 !important;
+  }
+  @keyframes flashPunch{
+    0%   { opacity:0; }
+    12%  { opacity:1; }
+    22%  { opacity:0.15; }
+    30%  { opacity:1; }
+    40%  { opacity:0.2; }
+    50%  { opacity:1; }
+    100% { opacity:1; }
+  }
+
+  /* ---------- FILM DAMAGE OVERLAYS ---------- */
+  /* Filmkorn komplett ohne Canvas/JS: eine per SVG feTurbulence erzeugte
+     Rauschtextur wird gekachelt und ihre background-position per steps()
+     "gesprungen" - erzeugt einen flackernden Korn-Look rein aus CSS. */
+  .grain-css{
+    position:absolute; inset:0;
+    z-index:10;
+    mix-blend-mode:overlay;
+    opacity:.5;
+    pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-repeat:repeat;
+    background-size:180px 180px;
+    animation: grainShift 0.42s steps(6) infinite;
+  }
+  @keyframes grainShift{
+    0%   { background-position: 0px 0px; }
+    100% { background-position: 360px 540px; }
+  }
+  .vignette{
+    position:absolute; inset:0;
+    z-index:11;
+    pointer-events:none;
+    background:radial-gradient(ellipse at center, rgba(20,12,0,0) 35%, rgba(15,8,0,.92) 100%);
+  }
+  .scratches{
+    position:absolute; inset:0;
+    z-index:12;
+    pointer-events:none;
+    mix-blend-mode:screen;
+  }
+  .scratch-line{
+    stroke:rgba(255,255,255,0.6);
+    opacity:0;
+  }
+  .scratch-line.flash{
+    animation: scratchLineFlash 0.15s ease-out forwards;
+  }
+  @keyframes scratchLineFlash{
+    0%   { opacity: var(--s-op, .6); }
+    100% { opacity: 0; }
+  }
+
+  /* Grund-Flackern (weißer Überlagerungsblitz) läuft als CSS-Loop statt per
+     JS jeden Frame neu berechnet zu werden. Für die kurzen, gezielten
+     "Blitze" bei Schnitten/Klebestellen gibt es die .boost-Klasse, die per
+     JS nur an- und wieder abgeschaltet wird (kein Dauerlauf im JS-Thread). */
+  .flicker{
+    position:absolute; inset:0;
+    z-index:13;
+    pointer-events:none;
+    background:#fff;
+    opacity:0;
+    animation: flickerNoise 2.4s steps(1,end) infinite;
+  }
+  @keyframes flickerNoise{
+    0%   { opacity:.02; }  4% { opacity:.13; }  9%  { opacity:.01; }
+    14%  { opacity:.09; } 19% { opacity:.02; }  26% { opacity:.16; }
+    33%  { opacity:.03; } 39% { opacity:.11; }  46% { opacity:.01; }
+    54%  { opacity:.08; } 61% { opacity:.02; }  69% { opacity:.15; }
+    76%  { opacity:.03; } 84% { opacity:.10; }  91% { opacity:.02; }
+    100% { opacity:.02; }
+  }
+  .flicker.boost{
+    animation: boostFlash 0.15s ease-out forwards;
+  }
+  @keyframes boostFlash{
+    0%   { opacity:.7; }
+    100% { opacity:0; }
+  }
+
+  .light-leak{
+    position:absolute; inset:0;
+    z-index:9;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 20% 30%, rgba(255,240,200,.25), transparent 55%);
+    opacity:0;
+  }
+  .dust{
+    position:absolute;
+    width:2px; height:2px;
+    background:rgba(255,245,225,.9);
+    border-radius:50%;
+    z-index:14;
+    pointer-events:none;
+    opacity:0;
+  }
+  .dust.active{
+    animation: dustPop 0.28s ease-out forwards;
+  }
+  @keyframes dustPop{
+    0%   { opacity: var(--d-op, .6); }
+    100% { opacity: 0; }
+  }
+  .hair{
+    position:absolute;
+    width:1px;
+    background:rgba(20,20,20,.7);
+    z-index:14;
+    pointer-events:none;
+    opacity:0;
+  }
+  .hair.active{
+    animation: hairPop 0.7s ease-out forwards;
+  }
+  @keyframes hairPop{
+    0%   { opacity: var(--h-op, .5); }
+    85%  { opacity: var(--h-op, .5); }
+    100% { opacity: 0; }
+  }
+  .burn-mark{
+    position:absolute; top:6%; right:6%;
+    width:22px; height:22px;
+    border-radius:50%;
+    background:rgba(255,255,255,0);
+    z-index:15;
+    pointer-events:none;
+  }
+  .burn-mark.active{
+    background:rgba(255,255,255,.9);
+    box-shadow:0 0 12px 4px rgba(255,255,255,.6);
+  }
+
+  #intro.exiting{ opacity:0; }
+
+  /* ---------- MAIN PAGE ----------
+     Token-System, direkt aus der Stadionkarte abgeleitet statt generischer
+     Defaultpalette: Navy aus der Grafik, Gold als Vereinsfarbe,
+     Anton (schon fuers Intro geladen) fuer die Countdown-Ziffern - bindet
+     den Countdown optisch an den NULL/DREI-Moment aus dem Intro zurueck. */
+  #page{
+    --navy:#13294b;
+    --navy-deep:#0c1c33;
+    --club-blue:#0f3ee0;
+    --gold:#f2b705;
+    --paper:#f6f7ef;
+    --ink:#13294b;
+    position:fixed; inset:0;
+    background:var(--paper);
+    color:var(--ink);
+    display:none;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    font-family:'Source Sans 3', system-ui, sans-serif;
+  }
+  #page.visible{ display:block; }
+
+  #page .countdown-section{
+    background:var(--navy);
+    color:#f4f1ea;
+    padding:56px 24px;
+  }
+  #page .countdown-inner{
+    display:flex;
+    align-items:center;
+    gap:32px;
+    max-width:1320px;
+    margin:0 auto;
+    position:relative;
+  }
+  #page .countdown-col{ flex:1 1 300px; min-width:260px; text-align:center; position:relative; z-index:1; }
+  #page .table-col{ flex:0 1 260px; min-width:220px; position:relative; z-index:1; }
+  #page .table-scroll{
+    max-height:236px;
+    overflow-y:auto;
+  }
+  #page .league-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  #page .league-table thead th{
+    position:sticky;
+    top:0;
+    background:var(--navy);
+  }
+  #page .league-table th{
+    font-family:'Oswald', sans-serif;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--gold);
+    text-align:left;
+    padding:6px 8px;
+    border-bottom:2px solid rgba(244,241,234,.25);
+  }
+  #page .league-table td{
+    padding:7px 8px;
+    color:#f4f1ea;
+    border-bottom:1px solid rgba(244,241,234,.12);
+  }
+  #page .league-table tr.highlight td{
+    background:rgba(15,62,224,.16);
+    font-weight:600;
+  }
+  #page .league-table tr.highlight-opponent td{
+    background:rgba(214,40,40,.16);
+    font-weight:600;
+  }
+  #page .league-table th:nth-child(1), #page .league-table td:nth-child(1){ width:44px; }
+  #page .league-table th:nth-child(3), #page .league-table td:nth-child(3),
+  #page .league-table th:nth-child(4), #page .league-table td:nth-child(4){ text-align:right; }
+  /* Lichtkegel: Ursprung eng an der Position des Lampenpanels (oben rechts),
+     faechert sich als klar begrenzter Kegel zum Countdown hin auf -
+     kein diffuses Glühen über die ganze Flaeche. */
+  #page .spotlight-glow{
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 93% 8%, rgba(242,183,5,.42) 0%, rgba(242,183,5,.2) 26%, rgba(242,183,5,0) 55%);
+    clip-path:polygon(93% 8%, 6% 52%, 6% 72%);
+    pointer-events:none;
+    z-index:0;
+  }
+  #page .feature-graphic{
+    flex:0 1 320px;
+    min-width:220px;
+    display:flex;
+    justify-content:flex-end;
+    position:relative;
+    z-index:1;
+  }
+  #page .feature-graphic svg{ width:100%; max-width:320px; height:auto; }
+  #page .countdown-section .eyebrow{
+    font-family:'Oswald', sans-serif;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    font-size:13px;
+    color:var(--gold);
+    margin-bottom:10px;
+    text-align:center;
+  }
+  #page .fixture{
+    font-family:'Oswald', sans-serif;
+    font-size:clamp(20px, 3.4vw, 30px);
+    font-weight:600;
+    margin-bottom:32px;
+  }
+  #page .fixture .vs{ color:var(--gold); margin:0 10px; }
+  #page .countdown{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin:0 auto;
+  }
+  /* Signatur-Element: Countdown-Boxen im Stil der Tribuenenbloecke A-O
+     aus der Stadionkarte - gleiche Formsprache, jetzt fuer Ziffern statt
+     Buchstaben. */
+  #page .cd-box{
+    background:var(--navy-deep);
+    border:1px solid rgba(244,241,234,.25);
+    border-radius:4px;
+    width:74px;
+    padding:14px 0 10px;
+  }
+  #page .cd-num{
+    display:block;
+    font-family:'Anton', sans-serif;
+    font-size:34px;
+    line-height:1;
+    color:#f4f1ea;
+  }
+  #page .cd-label{
+    display:block;
+    font-family:'Oswald', sans-serif;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-top:6px;
+  }
+
+  /* ---------- AUFSTELLUNG & KADER ----------
+     Gleiche Struktur wie die Countdown-Sektion (volle Breite, Inhalt auf
+     1320px begrenzt, zweispaltig), aber mit weissem statt Navy-Hintergrund. */
+  #page .lineup-section{
+    background:#ffffff;
+    padding:56px 24px;
+  }
+  #page .lineup-inner{
+    display:flex;
+    align-items:center;
+    gap:48px;
+    max-width:1320px;
+    margin:0 auto;
+  }
+  #page .lineup-graphic, #page .squad-col{ flex:1 1 320px; min-width:260px; }
+  #page .stats-col{ flex:1 1 220px; min-width:200px; }
+  #page .stat-block{ margin-bottom:22px; }
+  #page .stat-block:last-child{ margin-bottom:0; }
+  #page .stat-block h3{
+    font-family:'Oswald', sans-serif;
+    font-size:12.5px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--ink);
+    display:inline-block;
+    border-bottom:2px solid var(--gold);
+    padding-bottom:4px;
+    margin-bottom:8px;
+  }
+  #page .stat-block ol{
+    list-style:none;
+    counter-reset:rank;
+  }
+  #page .stat-block ol li{
+    counter-increment:rank;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:3px 0;
+    font-size:13.5px;
+    color:var(--ink);
+  }
+  #page .stat-block ol li::before{
+    content:counter(rank)".";
+    color:var(--club-blue);
+    font-weight:600;
+    margin-right:6px;
+  }
+  #page .stat-block .stat-name{ flex:1 1 auto; }
+  #page .stat-block .stat-value{ flex:0 0 auto; color:var(--club-blue); font-weight:600; }
+
+  /* ---- Interaktive Magnete auf der Taktiktafel ---- */
+  #page .player-marker{ cursor:pointer; }
+  #page .player-marker circle{ transition:transform .12s ease; transform-box:fill-box; transform-origin:center; }
+  #page .player-marker:hover circle{ transform:scale(1.12); }
+  #page .player-name-label{
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .12s ease;
+  }
+  #page .player-marker:hover .player-name-label{ opacity:1; }
+
+  /* Hervorhebung in Kaderliste und Statistik, wenn der zugehoerige Magnet
+     auf der Taktiktafel per Hover aktiv ist (Klasse wird per JS gesetzt) */
+  #page .squad-list li.active-player{
+    background:rgba(242,183,5,.16);
+  }
+  #page .squad-list li.active-player .num{ background:var(--gold); color:var(--navy-deep); }
+  #page .stat-block li.active-player{
+    background:rgba(242,183,5,.18);
+    border-radius:4px;
+  }
+  #page .lineup-graphic{ text-align:center; }
+  #page .lineup-section .eyebrow{
+    font-family:'Oswald', sans-serif;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    font-size:12.5px;
+    color:var(--club-blue);
+    margin-bottom:14px;
+    text-align:center;
+  }
+  #page .pitch-graphic{ width:100%; max-width:310px; display:block; margin:0 auto; }
+  #page .squad-scroll{
+    max-height:420px;
+    overflow-y:auto;
+  }
+  #page .squad-list{ list-style:none; }
+  #page .squad-list li{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:9px 0;
+    border-bottom:1px solid rgba(19,41,75,.1);
+  }
+  #page .squad-list li:last-child{ border-bottom:none; }
+  #page .squad-list .num{
+    flex:0 0 auto;
+    width:28px; height:28px;
+    border-radius:4px;
+    background:var(--navy);
+    color:#f4f1ea;
+    font-family:'Anton', sans-serif;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  #page .squad-list .name{
+    flex:1 1 auto;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  #page .squad-list .pos{
+    flex:0 0 auto;
+    font-family:'Oswald', sans-serif;
+    font-size:11.5px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--club-blue);
+  }
+
+  #page .site-footer{
+    background:var(--navy-deep);
+    color:#8a97b5;
+    text-align:center;
+    font-size:12.5px;
+    padding:22px 24px;
+    border-top:1px solid rgba(244,241,234,.1);
+  }
+
+  @media (max-width:720px){
+    #page .countdown-inner{
+      flex-direction:column;
+      gap:32px;
+    }
+    #page .cd-box{ width:64px; }
+    #page .cd-num{ font-size:28px; }
+    #page .spotlight-glow{
+      background:radial-gradient(circle at 50% 92%, rgba(242,183,5,.4) 0%, rgba(242,183,5,.18) 26%, rgba(242,183,5,0) 55%);
+      clip-path:polygon(50% 92%, 15% 40%, 85% 40%);
+    }
+    #page .lineup-inner{
+      flex-direction:column;
+      gap:36px;
+    }
+  }
+</style>
 </head>
 <body>
+
+  <div id="intro">
+    <div class="frame">
+      <div class="sprockets left">
+        <div class="track">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="sprockets right">
+        <div class="track">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="grain-css"></div>
+      <div class="title-card visible" id="card1">
+        <div class="place">Nowawes</div>
+        <div class="rule"></div>
+        <div class="year">1751</div>
+      </div>
+      <div class="title-card long" id="card2">
+        <div class="place">Sport-Club Jugendkraft 1903</div>
+        <div class="rule"></div>
+        <div class="year">1. Oktober 1903</div>
+      </div>
+      <div class="title-card long" id="card3">
+        <div class="place">Sportverein Babelsberg 03 e. V.</div>
+        <div class="rule"></div>
+        <div class="year">10. Dezember 1991</div>
+      </div>
+      <div class="flash-text top" id="flashNull">NULL</div>
+      <div class="flash-text bottom" id="flashDrei">DREI</div>
+      <div class="light-leak" id="lightleak"></div>
+      <div class="vignette"></div>
+      <svg class="scratches" id="scratches" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="flicker" id="flicker"></div>
+      <div class="burn-mark" id="burnmark"></div>
+    </div>
+    <div class="iris-mask" id="iris"></div>
+  </div>
+
+  <div id="page">
+    <section class="countdown-section">
+      <div class="countdown-inner">
+      <div class="spotlight-glow"></div>
+      <div class="table-col">
+        <p class="eyebrow">Tabelle</p>
+        <div class="table-scroll">
+        <table class="league-table">
+          <thead>
+            <tr><th>Platz</th><th>Verein</th><th>Sp</th><th>Pkt</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Chemnitzer FC</td><td>2</td><td>6</td></tr>
+            <tr><td>2</td><td>1. FC Magdeburg II</td><td>2</td><td>4</td></tr>
+            <tr><td>3</td><td>Rot-Weiß Erfurt</td><td>2</td><td>4</td></tr>
+            <tr><td>4</td><td>Greifswalder FC</td><td>2</td><td>4</td></tr>
+            <tr><td>5</td><td>RSV Eintracht (N)</td><td>2</td><td>4</td></tr>
+            <tr><td>6</td><td>1. FC Lok Leipzig</td><td>2</td><td>4</td></tr>
+            <tr><td>7</td><td>Erzgebirge Aue (A)</td><td>2</td><td>4</td></tr>
+            <tr class="highlight"><td>8</td><td>SV Babelsberg 03</td><td>2</td><td>3</td></tr>
+            <tr><td>9</td><td>Carl Zeiss Jena</td><td>2</td><td>3</td></tr>
+            <tr><td>10</td><td>BFC Dynamo</td><td>2</td><td>3</td></tr>
+            <tr><td>11</td><td>FSV Zwickau</td><td>2</td><td>3</td></tr>
+            <tr><td>12</td><td>Hallescher FC</td><td>2</td><td>2</td></tr>
+            <tr class="highlight-opponent"><td>13</td><td>VSG Altglienicke</td><td>1</td><td>1</td></tr>
+            <tr><td>14</td><td>BFC Preussen</td><td>2</td><td>1</td></tr>
+            <tr><td>15</td><td>Hertha BSC II</td><td>1</td><td>0</td></tr>
+            <tr><td>15</td><td>BSG Chemie Leipzig</td><td>2</td><td>0</td></tr>
+            <tr><td>17</td><td>FSV Luckenwalde</td><td>2</td><td>0</td></tr>
+            <tr><td>18</td><td>Tasmania Berlin (N)</td><td>2</td><td>0</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      <div class="countdown-col">
+        <p class="eyebrow">Nächstes Spiel</p>
+        <p class="fixture">SV Babelsberg 03 <span class="vs">vs.</span> VSG Altglienicke</p>
+        <div class="countdown" id="countdown">
+          <div class="cd-box"><span class="cd-num" id="cd-days">00</span><span class="cd-label">Tage</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">Std.</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-min">00</span><span class="cd-label">Min.</span></div>
+          <div class="cd-box"><span class="cd-num" id="cd-sec">00</span><span class="cd-label">Sek.</span></div>
+        </div>
+      </div>
+      <div class="feature-graphic">
+        <svg viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schema des Klappflutlichtmasts: der Lichtkopf klappt oben am Mast ab, der untere Mast bleibt fest stehen">
+          <!-- Boden -->
+          <line x1="10" y1="336" x2="370" y2="336" stroke="#f4f1ea" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Fester unterer Mast (steht fix, klappt nicht) -->
+          <line x1="300" y1="336" x2="300" y2="132" stroke="#f4f1ea" stroke-width="7" stroke-linecap="round"/>
+          <line x1="294.0" y1="305.4" x2="306.0" y2="305.4" stroke="#f4f1ea" stroke-width="3"/>
+          <line x1="294.0" y1="264.6" x2="306.0" y2="264.6" stroke="#f4f1ea" stroke-width="3"/>
+          <line x1="294.0" y1="223.8" x2="306.0" y2="223.8" stroke="#f4f1ea" stroke-width="3"/>
+          <line x1="294.0" y1="183.0" x2="306.0" y2="183.0" stroke="#f4f1ea" stroke-width="3"/>
+          <line x1="294.0" y1="152.4" x2="306.0" y2="152.4" stroke="#f4f1ea" stroke-width="3"/>
+          <rect x="286" y="336" width="28" height="8" rx="2" fill="#f4f1ea"/>
+
+          <!-- Geisterposition: abgeklappter Lichtkopf -->
+          <g stroke="#f4f1ea" fill="none" opacity="0.4">
+            <line x1="300" y1="132" x2="334.5" y2="217.3" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="1 6.5"/>
+            <rect x="313" y="196" width="46" height="30" rx="2" transform="rotate(68 336 211)" stroke-width="3"/>
+          </g>
+
+          <!-- Schwenkbogen um den Kippunkt, mit Pfeilspitze -->
+          <path d="M 318.5 74.9 A 60 60 0 0 1 333.6 181.7" fill="none" stroke="#f2b705" stroke-width="3" stroke-dasharray="1 8" stroke-linecap="round"/>
+          <polygon points="325.3 187.3 332.1 176.1 338.3 185.2" fill="#f2b705"/>
+
+          <!-- Kippgelenk-Plakette am Mast -->
+          <rect x="287.1" y="126.6" width="25.9" height="10.7" rx="1.5" fill="#f4f1ea" transform="rotate(-6 300 132)"/>
+          <circle cx="300" cy="132" r="3.4" fill="#f2b705"/>
+
+          <!-- Aufrechter Lichtkopf (Hauptdarstellung) -->
+          <line x1="300" y1="132" x2="309.6" y2="40.5" stroke="#f4f1ea" stroke-width="6.5" stroke-linecap="round"/>
+          <line x1="297.4" y1="99.3" x2="309.3" y2="100.6" stroke="#f4f1ea" stroke-width="3"/>
+          <line x1="300.8" y1="67.3" x2="312.7" y2="68.6" stroke="#f4f1ea" stroke-width="3"/>
+
+          <!-- Streben zum Lampenpanel -->
+          <line x1="307.7" y1="58.8" x2="272.3" y2="43.1" stroke="#f4f1ea" stroke-width="2.5"/>
+          <line x1="307.7" y1="58.8" x2="343.9" y2="50.7" stroke="#f4f1ea" stroke-width="2.5"/>
+
+          <!-- Aussenrahmen -->
+          <polygon points="272.5,2.9 352.1,11.3 347.5,55.1 267.9,46.7" fill="none" stroke="#f4f1ea" stroke-width="3.5"/>
+
+          <!-- Balken je Reihe (Schiene, auf der die Lampen sitzen) -->
+          <g stroke="#f4f1ea" stroke-width="4" stroke-linecap="round">
+            <line x1="275.7" y1="11.3" x2="347.3" y2="18.8"/>
+            <line x1="274.2" y1="25.2" x2="345.8" y2="32.8"/>
+            <line x1="272.7" y1="39.2" x2="344.3" y2="46.7"/>
+          </g>
+
+          <!-- Lampenpanel: drei Reihen -->
+          <g fill="#f2b705" stroke="#0c1c33" stroke-width="1.4">
+            <rect x="276.9" y="7.2" width="9.4" height="9.4" rx="1.3" transform="rotate(6 281.6 11.9)"/>
+            <rect x="296.8" y="9.3" width="9.4" height="9.4" rx="1.3" transform="rotate(6 301.5 14.0)"/>
+            <rect x="316.7" y="11.4" width="9.4" height="9.4" rx="1.3" transform="rotate(6 321.4 16.1)"/>
+            <rect x="336.6" y="13.5" width="9.4" height="9.4" rx="1.3" transform="rotate(6 341.3 18.2)"/>
+            <rect x="275.5" y="21.2" width="9.4" height="9.4" rx="1.3" transform="rotate(6 280.2 25.9)"/>
+            <rect x="295.4" y="23.3" width="9.4" height="9.4" rx="1.3" transform="rotate(6 300.1 28.0)"/>
+            <rect x="315.2" y="25.3" width="9.4" height="9.4" rx="1.3" transform="rotate(6 319.9 30.0)"/>
+            <rect x="335.1" y="27.4" width="9.4" height="9.4" rx="1.3" transform="rotate(6 339.8 32.1)"/>
+            <rect x="274.0" y="35.1" width="9.4" height="9.4" rx="1.3" transform="rotate(6 278.7 39.8)"/>
+            <rect x="293.9" y="37.2" width="9.4" height="9.4" rx="1.3" transform="rotate(6 298.6 41.9)"/>
+            <rect x="313.8" y="39.3" width="9.4" height="9.4" rx="1.3" transform="rotate(6 318.5 44.0)"/>
+            <rect x="333.7" y="41.4" width="9.4" height="9.4" rx="1.3" transform="rotate(6 338.4 46.1)"/>
+          </g>
+        </svg>
+      </div>
+      </div>
+    </section>
+
+    <section class="lineup-section">
+      <div class="lineup-inner">
+        <div class="stats-col">
+          <p class="eyebrow">Statistik</p>
+          <div class="stat-block">
+            <h3>Spieler des Spiels</h3>
+            <ol>
+              <li data-num="12"><span class="stat-name">Ebel Amadeus</span><span class="stat-value">1</span></li>
+            </ol>
+          </div>
+          <div class="stat-block">
+            <h3>Torschützen</h3>
+            <ol>
+              <li data-num="12"><span class="stat-name">Ebel Amadeus</span><span class="stat-value">2</span></li>
+            </ol>
+          </div>
+          <div class="stat-block">
+            <h3>Vorlagengeber</h3>
+            <ol>
+              <li data-num="17"><span class="stat-name">Schmidt Tino</span><span class="stat-value">1</span></li>
+            </ol>
+          </div>
+        </div>
+        <div class="lineup-graphic">
+          <p class="eyebrow">Aufstellung</p>
+          <svg class="pitch-graphic" viewBox="0 0 340 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Platzhalter-Aufstellung auf einer Taktiktafel in einer 4-3-3-Formation">
+            <defs>
+              <pattern id="grass" patternUnits="userSpaceOnUse" x="24" y="24" width="34" height="472">
+                <rect width="17" height="472" fill="#4a8a3d"/>
+                <rect x="17" width="17" height="472" fill="#3f7a34"/>
+              </pattern>
+            </defs>
+
+            <!-- Aufhaenge-Oesen -->
+            <circle cx="110" cy="9" r="7" fill="none" stroke="#8a8f97" stroke-width="4"/>
+            <circle cx="230" cy="9" r="7" fill="none" stroke="#8a8f97" stroke-width="4"/>
+
+            <!-- Alu-Rahmen der Taktiktafel: schmaler, einheitlicher Bezel auf allen Seiten -->
+            <rect x="2" y="2" width="336" height="516" rx="16" fill="#d7d9dc" stroke="#9a9ea5" stroke-width="2"/>
+            <rect x="16" y="16" width="308" height="488" rx="8" fill="#9a9ea5"/>
+
+            <!-- Gruene Tafel-Oberflaeche: nimmt wieder die komplette Flaeche ein,
+                 der vormals verbreiterte Rand ist jetzt Teil des Spielfelds -->
+            <rect x="24" y="24" width="292" height="472" rx="4" fill="url(#grass)"/>
+
+            <!-- Spielfeld-Markierungen: fuellen die gruene Flaeche komplett aus -->
+            <rect x="30" y="30" width="280" height="460" fill="none" stroke="#f4f1ea" stroke-width="3"/>
+            <line x1="30" y1="260" x2="310" y2="260" stroke="#f4f1ea" stroke-width="2"/>
+            <circle cx="170" cy="260" r="47" fill="none" stroke="#f4f1ea" stroke-width="2"/>
+            <circle cx="170" cy="260" r="3" fill="#f4f1ea"/>
+            <rect x="110" y="30" width="120" height="94.1" fill="none" stroke="#f4f1ea" stroke-width="2"/>
+            <rect x="140" y="30" width="60" height="36.6" fill="none" stroke="#f4f1ea" stroke-width="2"/>
+            <rect x="110" y="395.9" width="120" height="94.1" fill="none" stroke="#f4f1ea" stroke-width="2"/>
+            <rect x="140" y="453.4" width="60" height="36.6" fill="none" stroke="#f4f1ea" stroke-width="2"/>
+
+            <!-- Ersatzmarker: kleben auf dem schmalen Metallrand und sind
+                 genauso interaktiv wie die Feldspieler (Hover zeigt Namen,
+                 hebt Kaderliste/Statistik hervor). Label liegt rechts vom
+                 Marker, da links kein Platz mehr auf dem Rahmen ist. -->
+            <g class="player-marker" data-num="2">
+              <circle cx="13" cy="30" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="33.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">2</text>
+              <g class="player-name-label"><rect x="26" y="22" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="33.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Müller Niclas</text></g>
+            </g>
+            <g class="player-marker" data-num="13">
+              <circle cx="13" cy="87.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="90.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">13</text>
+              <g class="player-name-label"><rect x="26" y="79.5" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="90.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Lämmel Lukas</text></g>
+            </g>
+            <g class="player-marker" data-num="18">
+              <circle cx="13" cy="145" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="148.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">18</text>
+              <g class="player-name-label"><rect x="26" y="137" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="148.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Wegener Paul</text></g>
+            </g>
+            <g class="player-marker" data-num="8">
+              <circle cx="13" cy="202.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="205.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">8</text>
+              <g class="player-name-label"><rect x="26" y="194.5" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="205.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Salaske Noah</text></g>
+            </g>
+            <g class="player-marker" data-num="9">
+              <circle cx="13" cy="260" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="263.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">9</text>
+              <g class="player-name-label"><rect x="26" y="252" width="140" height="16" rx="3" fill="#0c1c33"/><text x="32" y="263.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">von Piechowski Laurin</text></g>
+            </g>
+            <g class="player-marker" data-num="11">
+              <circle cx="13" cy="317.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="320.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">11</text>
+              <g class="player-name-label"><rect x="26" y="309.5" width="140" height="16" rx="3" fill="#0c1c33"/><text x="32" y="320.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Berger Tom-Kaspar</text></g>
+            </g>
+            <g class="player-marker" data-num="14">
+              <circle cx="13" cy="375" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="378.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">14</text>
+              <g class="player-name-label"><rect x="26" y="367" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="378.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Meier Matthew</text></g>
+            </g>
+            <g class="player-marker" data-num="20">
+              <circle cx="13" cy="432.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="435.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">20</text>
+              <g class="player-name-label"><rect x="26" y="424.5" width="150" height="16" rx="3" fill="#0c1c33"/><text x="32" y="435.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Herrmann Charles-Jesaja</text></g>
+            </g>
+            <g class="player-marker" data-num="4">
+              <circle cx="13" cy="490" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="13" y="493.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">4</text>
+              <g class="player-name-label"><rect x="26" y="482" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="493.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Geue Tjalf</text></g>
+            </g>
+
+            <!-- Spieler-Marker (Startformation 4-3-3, nach Einsaetzen bestimmt):
+                 jede Gruppe ist per Hover interaktiv - zeigt den Namen und hebt
+                 Kaderliste/Statistik hervor -->
+            <g class="player-marker" data-num="1">
+              <circle cx="170.0" cy="453.4" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="170.0" y="457.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">1</text>
+              <g class="player-name-label"><rect x="100" y="418.4" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="429.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Babke Maximus</text></g>
+            </g>
+            <g class="player-marker" data-num="3">
+              <circle cx="75.0" cy="375.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="75.0" y="379.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">3</text>
+              <g class="player-name-label"><rect x="5" y="340.0" width="140" height="16" rx="3" fill="#0c1c33"/><text x="75" y="351.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Büch Gordon</text></g>
+            </g>
+            <g class="player-marker" data-num="5">
+              <circle cx="138.0" cy="380.2" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="138.0" y="384.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">5</text>
+              <g class="player-name-label"><rect x="68" y="345.2" width="140" height="16" rx="3" fill="#0c1c33"/><text x="138" y="356.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Hasse Tobias</text></g>
+            </g>
+            <g class="player-marker" data-num="6">
+              <circle cx="202.0" cy="380.2" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="202.0" y="384.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">6</text>
+              <g class="player-name-label"><rect x="132" y="345.2" width="140" height="16" rx="3" fill="#0c1c33"/><text x="202" y="356.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">Kalckreuth Maximilian</text></g>
+            </g>
+            <g class="player-marker" data-num="7">
+              <circle cx="265.0" cy="375.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="265.0" y="379.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">7</text>
+              <g class="player-name-label"><rect x="195" y="340.0" width="140" height="16" rx="3" fill="#0c1c33"/><text x="265" y="351.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Lang Jannis</text></g>
+            </g>
+            <g class="player-marker" data-num="12">
+              <circle cx="105.0" cy="280.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="105.0" y="285.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">12</text>
+              <g class="player-name-label"><rect x="35" y="245.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="105" y="256.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Ebel Amadeus</text></g>
+            </g>
+            <g class="player-marker" data-num="17">
+              <circle cx="170.0" cy="286.1" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="170.0" y="290.6" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">17</text>
+              <g class="player-name-label"><rect x="100" y="251.1" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="262.1" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Schmidt Tino</text></g>
+            </g>
+            <g class="player-marker" data-num="15">
+              <circle cx="235.0" cy="280.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="235.0" y="285.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">15</text>
+              <g class="player-name-label"><rect x="165" y="245.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="235" y="256.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Ogbidi Theo</text></g>
+            </g>
+            <g class="player-marker" data-num="21">
+              <circle cx="95.0" cy="165.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="95.0" y="170.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">21</text>
+              <g class="player-name-label"><rect x="25" y="130.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="95" y="141.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Kang Min-Gi</text></g>
+            </g>
+            <g class="player-marker" data-num="22">
+              <circle cx="170.0" cy="155.5" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="170.0" y="160.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">22</text>
+              <g class="player-name-label"><rect x="100" y="120.5" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="131.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Okpalaike Joshua</text></g>
+            </g>
+            <g class="player-marker" data-num="23">
+              <circle cx="245.0" cy="165.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="245.0" y="170.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">23</text>
+              <g class="player-name-label"><rect x="175" y="130.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="245" y="141.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Werbelow Samir</text></g>
+            </g>
+
+            <!-- Stifthalterung + Schwamm, wie an einer echten Taktiktafel -->
+            <rect x="30" y="503" width="280" height="9" rx="4" fill="#b7bac0"/>
+            <rect x="130" y="500" width="70" height="13" rx="6" fill="#1547c9" transform="rotate(-3 165 507)"/>
+            <rect x="234" y="450" width="46" height="32" rx="6" fill="#181818"/>
+          </svg>
+        </div>
+        <div class="squad-col">
+          <p class="eyebrow">Kader</p>
+          <div class="squad-scroll">
+          <ul class="squad-list">
+            <li data-num="1"><span class="num">1</span><span class="name">Babke Maximus</span><span class="pos">TW</span></li>
+            <li data-num="2"><span class="num">2</span><span class="name">Müller Niclas</span><span class="pos">TW</span></li>
+            <li data-num="3"><span class="num">3</span><span class="name">Büch Gordon</span><span class="pos">ABW</span></li>
+            <li data-num="4"><span class="num">4</span><span class="name">Geue Tjalf</span><span class="pos">ABW</span></li>
+            <li data-num="5"><span class="num">5</span><span class="name">Hasse Tobias</span><span class="pos">ABW</span></li>
+            <li data-num="6"><span class="num">6</span><span class="name">Kalckreuth Maximilian</span><span class="pos">ABW</span></li>
+            <li data-num="7"><span class="num">7</span><span class="name">Lang Jannis</span><span class="pos">ABW</span></li>
+            <li data-num="8"><span class="num">8</span><span class="name">Salaske Noah</span><span class="pos">ABW</span></li>
+            <li data-num="9"><span class="num">9</span><span class="name">von Piechowski Laurin</span><span class="pos">ABW</span></li>
+            <li data-num="10"><span class="num">10</span><span class="name">Weyh Kenny</span><span class="pos">ABW</span></li>
+            <li data-num="11"><span class="num">11</span><span class="name">Berger Tom-Kaspar</span><span class="pos">MF</span></li>
+            <li data-num="12"><span class="num">12</span><span class="name">Ebel Amadeus</span><span class="pos">MF</span></li>
+            <li data-num="13"><span class="num">13</span><span class="name">Lämmel Lukas</span><span class="pos">MF</span></li>
+            <li data-num="14"><span class="num">14</span><span class="name">Meier Matthew</span><span class="pos">MF</span></li>
+            <li data-num="15"><span class="num">15</span><span class="name">Ogbidi Theo</span><span class="pos">MF</span></li>
+            <li data-num="16"><span class="num">16</span><span class="name">Perovic Marko</span><span class="pos">MF</span></li>
+            <li data-num="17"><span class="num">17</span><span class="name">Schmidt Tino</span><span class="pos">MF</span></li>
+            <li data-num="18"><span class="num">18</span><span class="name">Wegener Paul</span><span class="pos">MF</span></li>
+            <li data-num="19"><span class="num">19</span><span class="name">Gollnack Simon</span><span class="pos">ST</span></li>
+            <li data-num="20"><span class="num">20</span><span class="name">Herrmann Charles-Jesaja</span><span class="pos">ST</span></li>
+            <li data-num="21"><span class="num">21</span><span class="name">Kang Min-Gi</span><span class="pos">ST</span></li>
+            <li data-num="22"><span class="num">22</span><span class="name">Okpalaike Joshua</span><span class="pos">ST</span></li>
+            <li data-num="23"><span class="num">23</span><span class="name">Werbelow Samir</span><span class="pos">ST</span></li>
+          </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TODO (naechste Sitzung): weitere Sektion ergaenzen, wieder mit blauem
+         Navy-Hintergrund (wie die Countdown-Sektion oben), in genau dieser
+         Reihenfolge von links nach rechts:
+         1. 3D-Modell / Illustration vom Karl-Liebknecht-Stadion ("Karli")
+         2. Spielplan-Uebersicht
+         3. Spielberichte mit Archiv, inkl. Verlinkung zu Kicker-Artikeln -->
+
+    <footer class="site-footer">
+      SV Babelsberg 03 e. V. &middot; Karl-Liebknecht-Stadion, Karl-Liebknecht-Straße, Potsdam
+    </footer>
+  </div>
+
+<script>
+(function(){
+  const intro = document.getElementById('intro');
+  const page = document.getElementById('page');
+  const flicker = document.getElementById('flicker');
+  const lightleak = document.getElementById('lightleak');
+  const burnmark = document.getElementById('burnmark');
+  const scratchesSvg = document.getElementById('scratches');
+  const frame = document.querySelector('.frame');
+  const card1 = document.getElementById('card1');
+  const card2 = document.getElementById('card2');
+  const card3 = document.getElementById('card3');
+  const flashNull = document.getElementById('flashNull');
+  const flashDrei = document.getElementById('flashDrei');
+
+  let finished = false;
+  let modernMode = false;
+
+  /* Einzige Quelle der Wahrheit fuer alle Timings. Die beiden Werte, die
+     auch in CSS-Animationsdauern gebraucht werden (irisDuration,
+     flashDuration), werden unten als Custom Properties gesetzt - so
+     koennen JS und CSS nie auseinanderdriften. */
+  const TIMING = {
+    introDuration: 9450, // ms bis zum Uebergang zur Hauptseite
+    cutToCard2:    2700, // Nowawes/1751 -> Sport-Club Jugendkraft 1903
+    cutToCard3:    5400, // -> Sportverein Babelsberg 03 e. V.
+    card3Hide:     8100, // Titelkarte weg, Flash-Sequenz beginnt
+    nullHide:      8550, // NULL wieder weg
+    dreiShow:      8650, // DREI erscheint unten
+    dreiHide:      9250, // DREI wieder weg
+    irisDuration:  9800, // CSS-Animationsdauer der Iris-Blende
+    flashDuration:  420  // CSS-Animationsdauer von flashPunch
+  };
+  document.documentElement.style.setProperty('--iris-duration', TIMING.irisDuration + 'ms');
+  document.documentElement.style.setProperty('--flash-duration', TIMING.flashDuration + 'ms');
+
+  /* ---- Kratzer: fester Pool wiederverwendeter <line>-Elemente statt
+     staendigem Erzeugen/Entfernen von SVG-Knoten (analog zu Staub/Fussel) ---- */
+  const SCRATCH_POOL_SIZE = 4;
+  const scratchPool = [];
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  for(let i=0;i<SCRATCH_POOL_SIZE;i++){
+    const line = document.createElementNS(SVG_NS,'line');
+    line.setAttribute('y1','0');
+    line.setAttribute('y2','100%');
+    line.setAttribute('class','scratch-line');
+    scratchesSvg.appendChild(line);
+    scratchPool.push(line);
+  }
+  let scratchIndex = 0;
+  function flashLine(line, x, drift, op, strokeWidth){
+    line.setAttribute('x1', x+'%');
+    line.setAttribute('x2', (x+drift)+'%');
+    line.setAttribute('stroke-width', strokeWidth.toFixed(2));
+    line.style.setProperty('--s-op', op.toFixed(2));
+    line.classList.remove('flash');
+    void line.getBoundingClientRect(); // Reflow erzwingen, damit die Animation neu startet
+    line.classList.add('flash');
+  }
+  function spawnScratch(){
+    if(finished) return;
+    const count = Math.random() < 0.3 ? 2 : 1;
+    for(let i=0;i<count;i++){
+      const line = scratchPool[scratchIndex];
+      scratchIndex = (scratchIndex + 1) % scratchPool.length;
+      flashLine(line, Math.random()*100, Math.random()*2-1, Math.random()*0.5+0.25, Math.random()*1.6+0.4);
+    }
+  }
+  let scratchInterval = setInterval(spawnScratch, 140);
+
+  /* ---- Kurzer, gezielter Blitzlicht-Impuls (Filmklebestelle / Schnitt).
+     Läuft als eigene kurze CSS-Animation, per Klassen-Toggle ausgelöst -
+     kein Dauerlauf im JS. ---- */
+  function boostFlicker(){
+    flicker.classList.remove('boost');
+    void flicker.offsetWidth; // Reflow erzwingen, damit die Animation neu startet
+    flicker.classList.add('boost');
+    // boost-Klasse danach wieder entfernen, sonst bleibt sie fuer immer gesetzt
+    // und ueberdeckt per hoeherer Spezifitaet dauerhaft das Grund-Flackern.
+    setTimeout(()=>{ flicker.classList.remove('boost'); }, 170);
+  }
+
+  /* ---- Gelegentlicher Licht-Leck-Schimmer ---- */
+  function lightLeakPulse(){
+    if(finished) return;
+    lightleak.style.opacity = (Math.random()*0.5).toFixed(2);
+    setTimeout(lightLeakPulse, 500 + Math.random()*900);
+  }
+  lightLeakPulse();
+
+  /* ---- Staub-Partikel: fester Pool wiederverwendeter Elemente statt
+     staendigem Erzeugen/Entfernen von DOM-Knoten (spart Reflow/GC-Druck) ---- */
+  const DUST_POOL_SIZE = 14;
+  const dustPool = [];
+  for(let i=0;i<DUST_POOL_SIZE;i++){
+    const d = document.createElement('div');
+    d.className = 'dust';
+    frame.appendChild(d);
+    dustPool.push(d);
+  }
+  let dustIndex = 0;
+  function spawnDust(){
+    if(finished) return;
+    const d = dustPool[dustIndex];
+    dustIndex = (dustIndex + 1) % dustPool.length;
+    d.style.left = (Math.random()*100)+'%';
+    d.style.top = (Math.random()*100)+'%';
+    d.style.setProperty('--d-op', (Math.random()*0.7+0.2).toFixed(2));
+    d.classList.remove('active');
+    void d.offsetWidth; // Reflow erzwingen, damit die Animation neu startet
+    d.classList.add('active');
+  }
+  let dustInterval = setInterval(spawnDust, 80);
+
+  /* ---- Vereinzelte kurze "Haare"/Fussel im Bildkader - ebenfalls als Pool ---- */
+  const HAIR_POOL_SIZE = 5;
+  const hairPool = [];
+  for(let i=0;i<HAIR_POOL_SIZE;i++){
+    const h = document.createElement('div');
+    h.className = 'hair';
+    frame.appendChild(h);
+    hairPool.push(h);
+  }
+  let hairIndex = 0;
+  function spawnHair(){
+    if(finished) return;
+    const h = hairPool[hairIndex];
+    hairIndex = (hairIndex + 1) % hairPool.length;
+    h.style.left = (Math.random()*100)+'%';
+    h.style.top = (Math.random()*70+5)+'%';
+    h.style.height = (10+Math.random()*40)+'px';
+    h.style.transform = `rotate(${(Math.random()*30-15)}deg)`;
+    h.style.setProperty('--h-op', (Math.random()*0.5+0.3).toFixed(2));
+    h.classList.remove('active');
+    void h.offsetWidth;
+    h.classList.add('active');
+  }
+  let hairInterval = setInterval(spawnHair, 700);
+
+  /* ---- Harter Schnitt: Nowawes/1751 -> Sport-Club Jugendkraft 1903,
+     mit kurzem Aufflackern wie an einer echten Filmklebestelle ---- */
+  function spliceCut(){
+    boostFlicker();
+    scratchPool.forEach(line=>{
+      flashLine(line, Math.random()*100, Math.random()*2-1, 0.75, Math.random()*1.8+0.6);
+    });
+  }
+  setTimeout(()=>{
+    card1.classList.remove('visible');
+    card2.classList.add('visible');
+    spliceCut();
+  }, TIMING.cutToCard2);
+
+  /* ---- Harter Schnitt: -> Sportverein Babelsberg 03 e. V. ---- */
+  setTimeout(()=>{
+    card2.classList.remove('visible');
+    card3.classList.add('visible');
+    spliceCut();
+  }, TIMING.cutToCard3);
+
+  /* ---- Zigarettenbrand-Marker (Reel-Change-Cue) kurz vor der Flash-Sequenz ---- */
+  setTimeout(()=>{ burnmark.classList.add('active'); }, TIMING.card3Hide - 900);
+  setTimeout(()=>{ burnmark.classList.remove('active'); }, TIMING.card3Hide - 650);
+
+  /* ---- Schnelle, grelle Flash-Sequenz: NULL (oben) -> weg -> DREI (unten)
+     Genau hier kippt die Bühne von Stummfilm-Optik zu modernem Flächen-Blau ---- */
+  setTimeout(()=>{
+    card3.classList.remove('visible');
+    intro.classList.add('modern');
+    modernMode = true;
+    clearInterval(scratchInterval);
+    clearInterval(dustInterval);
+    clearInterval(hairInterval);
+    flashNull.classList.remove('cut');
+    flashNull.classList.add('show');
+  }, TIMING.card3Hide);
+
+  setTimeout(()=>{
+    flashNull.classList.remove('show');
+    flashNull.classList.add('cut');
+  }, TIMING.nullHide);
+
+  setTimeout(()=>{
+    flashDrei.classList.remove('cut');
+    flashDrei.classList.add('show');
+    intro.classList.add('invert'); // Hintergrund wird weiß, DREI-Text ist blau
+  }, TIMING.dreiShow);
+
+  setTimeout(()=>{
+    flashDrei.classList.remove('show');
+    flashDrei.classList.add('cut');
+  }, TIMING.dreiHide);
+
+  /* ---- Übergang zur (leeren) Hauptseite ----
+     Im 1911er-Teil hat sich die Iris bereits zu Schwarz geschlossen, ein
+     harter Schnitt reicht. Im modernen Blau-Teil (nach NULL/DREI) passt
+     stattdessen ein sauberes Ausblenden besser zum flachen, modernen Look. */
+  function finishIntro(){
+    if(finished) return;
+    finished = true;
+    clearInterval(scratchInterval);
+    clearInterval(dustInterval);
+    clearInterval(hairInterval);
+
+    if(modernMode){
+      page.classList.add('visible');
+      intro.classList.add('exiting');
+      setTimeout(()=>{ intro.classList.add('hidden'); }, 200);
+    } else {
+      intro.classList.add('hidden');
+      page.classList.add('visible');
+    }
+  }
+
+  setTimeout(finishIntro, TIMING.introDuration);
+
+  /* ---- Geheimer Skip: Taste "s" ueberspringt das Intro sofort ----
+     Bewusst ohne sichtbaren Button oder Hinweis. ---- */
+  document.addEventListener('keydown', function(e){
+    if(!finished && (e.key === 's' || e.key === 'S')){
+      finishIntro();
+    }
+  });
+})();
+
+/* ---- Countdown auf der Hauptseite ----
+   Ziel: SV Babelsberg 03 vs. VSG Altglienicke, Anstoss heute 19:00 Uhr. ---- */
+(function(){
+  const els = {
+    days:  document.getElementById('cd-days'),
+    hours: document.getElementById('cd-hours'),
+    min:   document.getElementById('cd-min'),
+    sec:   document.getElementById('cd-sec'),
+  };
+  if(!els.days) return;
+
+  function kickoffToday(){
+    const target = new Date();
+    target.setHours(19,0,0,0);
+    return target;
+  }
+
+  const target = kickoffToday();
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function tick(){
+    const diff = Math.max(0, target - new Date());
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor(diff % 86400000 / 3600000);
+    const min   = Math.floor(diff % 3600000 / 60000);
+    const sec   = Math.floor(diff % 60000 / 1000);
+    els.days.textContent  = pad(days);
+    els.hours.textContent = pad(hours);
+    els.min.textContent   = pad(min);
+    els.sec.textContent   = pad(sec);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ---- Taktiktafel: Hover auf einen Magneten hebt Name in Kaderliste
+   und (falls vorhanden) in den Statistiken hervor. ---- */
+(function(){
+  const markers = document.querySelectorAll('.player-marker');
+  if(!markers.length) return;
+
+  function setActive(num, on){
+    document.querySelectorAll(
+      `.squad-list li[data-num="${num}"], .stat-block li[data-num="${num}"]`
+    ).forEach(el => el.classList.toggle('active-player', on));
+  }
+
+  markers.forEach(marker => {
+    const num = marker.getAttribute('data-num');
+    marker.addEventListener('mouseenter', () => setActive(num, true));
+    marker.addEventListener('mouseleave', () => setActive(num, false));
+  });
+})();
+</script>
+
 </body>
 </html>
