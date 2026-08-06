@@ -799,14 +799,20 @@
   #page .report-body{
     min-height:60px;
   }
-  #page .report-kicker-link{
+  #page .report-links{
+    display:flex; flex-direction:row; flex-wrap:wrap; gap:8px; align-items:center;
+  }
+  #page .report-link-btn{
     display:inline-block;
     font-family:'Oswald', sans-serif; font-weight:700; font-size:14px; letter-spacing:0.3px;
-    color:#fff; background:#d0021b;
+    color:#fff;
     border-radius:4px; padding:10px 16px;
     text-decoration:none;
   }
-  #page .report-kicker-link:hover{ background:#a80115; }
+  #page .report-link-kicker{ background:#d0021b; }
+  #page .report-link-kicker:hover{ background:#a80115; }
+  #page .report-link-verein{ background:var(--club-blue); }
+  #page .report-link-verein:hover{ background:#0c30b3; }
   #page .report-own{
     margin-top:18px;
   }
@@ -1052,7 +1058,7 @@
         </div>
         <div class="lineup-graphic">
           <p class="eyebrow">Aufstellung</p>
-          <svg class="pitch-graphic" viewBox="0 0 340 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aufstellung auf einer Taktiktafel in einer 4-5-1-Formation">
+          <svg class="pitch-graphic" viewBox="0 0 340 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aufstellung auf einer Taktiktafel in einer 4-3-3-Formation, mit Einwechslungen der letzten Partie">
             <defs>
               <pattern id="grass" patternUnits="userSpaceOnUse" x="24" y="24" width="292" height="34">
                 <rect width="292" height="17" fill="#4a8a3d"/>
@@ -1086,130 +1092,129 @@
                  genauso interaktiv wie die Feldspieler (Hover zeigt Namen,
                  hebt Kaderliste/Statistik hervor). Label liegt rechts vom
                  Marker, da links kein Platz mehr auf dem Rahmen ist.
-                 Nach dem Wechsel auf 4-5-1: Kalckreuth, Okpalaike und
-                 Werbelow sind jetzt hier (vormals Laemmel, Wegener,
-                 von Piechowski, die jetzt in der Startelf stehen). -->
+                 Zeigt die nicht eingesetzten/nicht eingewechselten Spieler
+                 der letzten Partie (4-3-3, siehe unten). -->
             <g class="player-marker" data-num="19">
               <circle cx="13" cy="30" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
               <text x="13" y="33.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">19</text>
               <g class="player-name-label"><rect x="26" y="22" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="33.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Müller Niclas</text></g>
             </g>
-            <g class="player-marker" data-num="2">
+            <g class="player-marker" data-num="5">
               <circle cx="13" cy="87.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="90.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">2</text>
-              <g class="player-name-label"><rect x="26" y="79.5" width="150" height="16" rx="3" fill="#0c1c33"/><text x="32" y="90.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Kalckreuth Maximilian</text></g>
+              <text x="13" y="90.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">5</text>
+              <g class="player-name-label"><rect x="26" y="79.5" width="120" height="16" rx="3" fill="#0c1c33"/><text x="32" y="90.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Weyh Kenny</text></g>
             </g>
-            <g class="player-marker" data-num="9">
+            <g class="player-marker" data-num="28">
               <circle cx="13" cy="145" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="148.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">9</text>
-              <g class="player-name-label"><rect x="26" y="137" width="140" height="16" rx="3" fill="#0c1c33"/><text x="32" y="148.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Okpalaike Joshua</text></g>
+              <text x="13" y="148.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">28</text>
+              <g class="player-name-label"><rect x="26" y="137" width="150" height="16" rx="3" fill="#0c1c33"/><text x="32" y="148.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">von Piechowski Laurin</text></g>
             </g>
-            <g class="player-marker" data-num="17">
+            <g class="player-marker" data-num="33">
               <circle cx="13" cy="202.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="205.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">17</text>
-              <g class="player-name-label"><rect x="26" y="194.5" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="205.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Salaske Noah</text></g>
+              <text x="13" y="205.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">33</text>
+              <g class="player-name-label"><rect x="26" y="194.5" width="140" height="16" rx="3" fill="#0c1c33"/><text x="32" y="205.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Berger Tom-Kaspar</text></g>
             </g>
             <g class="player-marker" data-num="7">
               <circle cx="13" cy="260" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
               <text x="13" y="263.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">7</text>
               <g class="player-name-label"><rect x="26" y="252" width="140" height="16" rx="3" fill="#0c1c33"/><text x="32" y="263.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Werbelow Samir</text></g>
             </g>
-            <g class="player-marker" data-num="33">
+            <g class="player-marker" data-num="11">
               <circle cx="13" cy="317.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="320.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">33</text>
-              <g class="player-name-label"><rect x="26" y="309.5" width="140" height="16" rx="3" fill="#0c1c33"/><text x="32" y="320.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Berger Tom-Kaspar</text></g>
+              <text x="13" y="320.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">11</text>
+              <g class="player-name-label"><rect x="26" y="309.5" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="320.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Schmidt Tino</text></g>
             </g>
-            <g class="player-marker" data-num="10">
+            <g class="player-marker" data-num="22">
               <circle cx="13" cy="375" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="378.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">10</text>
-              <g class="player-name-label"><rect x="26" y="367" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="378.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Meier Matthew</text></g>
+              <text x="13" y="378.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">22</text>
+              <g class="player-name-label"><rect x="26" y="367" width="120" height="16" rx="3" fill="#0c1c33"/><text x="32" y="378.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Lehmann Felix</text></g>
             </g>
-            <g class="player-marker" data-num="24">
+            <g class="player-marker" data-num="23">
               <circle cx="13" cy="432.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="435.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">24</text>
-              <g class="player-name-label"><rect x="26" y="424.5" width="150" height="16" rx="3" fill="#0c1c33"/><text x="32" y="435.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Herrmann Charles-Jesaja</text></g>
+              <text x="13" y="435.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">23</text>
+              <g class="player-name-label"><rect x="26" y="424.5" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="435.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Malzahn Mika</text></g>
             </g>
-            <g class="player-marker" data-num="geue-nonum">
+            <g class="player-marker" data-num="29">
               <circle cx="13" cy="490" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="493.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">–</text>
-              <g class="player-name-label"><rect x="26" y="482" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="493.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Geue Tjalf</text></g>
+              <text x="13" y="493.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">29</text>
+              <g class="player-name-label"><rect x="26" y="482" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="493.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Gollnack Simon</text></g>
             </g>
 
-            <!-- Schemenhafte Marker-Skizze, angepasst an 4-5-1: Ebel prescht aus
-                 dem linken Mittelfeld nach vorne, Schmidt spielt den Pass in
-                 den Lauf hinein, Ebel schliesst ab. -->
+            <!-- Schemenhafte Marker-Skizze: Kang zieht auf den linken Fluegel,
+                 von dort kommt die Flanke/der Pass zum langen Pfosten, wo
+                 Ogbidi nur noch einschieben muss. -->
             <defs>
               <marker id="sketchArrow" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto">
                 <path d="M0,0 L9,4.5 L0,9 L2.8,4.5 Z" fill="#141414" opacity="0.82"/>
               </marker>
             </defs>
             <g fill="none" stroke="#141414" opacity="0.82" stroke-linecap="round">
-              <!-- Ebels Laufweg (gestrichelt): startet aus dem linken Mittelfeld
-                   und prescht diagonal nach vorne in den Zwischenraum -->
-              <path d="M55,270 Q75,205 138,163" stroke-width="1.8" stroke-dasharray="5 4"/>
-              <!-- Schmidts Pass in den Lauf hinein -->
-              <path d="M227.5,270 Q195,208 138,163" stroke-width="2.3" marker-end="url(#sketchArrow)"/>
-              <!-- Ebels Abschluss aufs Tor -->
-              <path d="M138,163 Q146,95 155,40" stroke-width="2.3" marker-end="url(#sketchArrow)"/>
+              <!-- Kangs Laufweg auf den linken Fluegel, fast bis zur Grundlinie (gestrichelt) -->
+              <path d="M170,155.5 Q95,105 42,36" stroke-width="1.8" stroke-dasharray="5 4"/>
+              <!-- Kangs Pass/Flanke zum langen Pfosten -->
+              <path d="M42,36 Q125,48 205,48" stroke-width="2.3" marker-end="url(#sketchArrow)"/>
+              <!-- Ogbidis kurzer Einschuss aus kurzer Distanz -->
+              <path d="M245,165.9 Q222,105 205,48" stroke-width="1.8" stroke-dasharray="5 4"/>
+              <path d="M205,48 L188,38" stroke-width="2.3" marker-end="url(#sketchArrow)"/>
             </g>
 
-            <!-- Spieler-Marker (Startformation 4-5-1, nach Einsaetzen bestimmt):
-                 jede Gruppe ist per Hover interaktiv - zeigt den Namen und hebt
-                 Kaderliste/Statistik hervor -->
+            <!-- Spieler-Marker (Startformation 4-3-3 der letzten Partie).
+                 Jede Gruppe ist per Hover interaktiv - zeigt den Namen und
+                 hebt Kaderliste/Statistik hervor. -->
             <g class="player-marker" data-num="1">
               <circle cx="170.0" cy="453.4" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
               <text x="170.0" y="457.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">1</text>
               <g class="player-name-label"><rect x="100" y="418.4" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="429.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Babke Maximus</text></g>
             </g>
-            <g class="player-marker" data-num="27">
-              <circle cx="75.0" cy="375.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="75.0" y="379.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">27</text>
-              <g class="player-name-label"><rect x="5" y="340.0" width="140" height="16" rx="3" fill="#0c1c33"/><text x="75" y="351.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Büch Gordon</text></g>
-            </g>
-            <g class="player-marker" data-num="20">
-              <circle cx="138.0" cy="380.2" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="138.0" y="384.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">20</text>
-              <g class="player-name-label"><rect x="68" y="345.2" width="140" height="16" rx="3" fill="#0c1c33"/><text x="138" y="356.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Hasse Tobias</text></g>
-            </g>
             <g class="player-marker" data-num="3">
-              <circle cx="202.0" cy="380.2" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="202.0" y="384.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">3</text>
-              <g class="player-name-label"><rect x="132" y="345.2" width="140" height="16" rx="3" fill="#0c1c33"/><text x="202" y="356.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Lang Jannis</text></g>
-            </g>
-            <g class="player-marker" data-num="28">
-              <circle cx="265.0" cy="375.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="265.0" y="379.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">28</text>
-              <g class="player-name-label"><rect x="180" y="340.0" width="170" height="16" rx="3" fill="#0c1c33"/><text x="265" y="351.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">von Piechowski Laurin</text></g>
-            </g>
-            <g class="player-marker" data-num="18">
-              <circle cx="55.0" cy="270.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="55.0" y="274.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">18</text>
-              <g class="player-name-label"><rect x="4" y="235.0" width="130" height="16" rx="3" fill="#0c1c33"/><text x="69" y="246.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Ebel Amadeus</text></g>
+              <circle cx="75.0" cy="375.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="75.0" y="379.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">3</text>
+              <g class="player-name-label"><rect x="5" y="340.0" width="140" height="16" rx="3" fill="#0c1c33"/><text x="75" y="351.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Lang Jannis</text></g>
             </g>
             <g class="player-marker" data-num="8">
-              <circle cx="112.5" cy="270.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="112.5" y="274.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">8</text>
-              <g class="player-name-label"><rect x="48" y="235.0" width="130" height="16" rx="3" fill="#0c1c33"/><text x="113" y="246.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Lämmel Lukas</text></g>
+              <circle cx="105.0" cy="280.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="105.0" y="285.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">8</text>
+              <g class="player-name-label"><rect x="35" y="245.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="105" y="256.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Lämmel Lukas</text></g>
             </g>
-            <g class="player-marker" data-num="25">
-              <circle cx="170.0" cy="270.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="170.0" y="274.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">25</text>
-              <g class="player-name-label"><rect x="105" y="235.0" width="130" height="16" rx="3" fill="#0c1c33"/><text x="170" y="246.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Ogbidi Theo</text></g>
+            <g class="player-marker" data-num="20">
+              <circle cx="202.0" cy="380.2" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="202.0" y="384.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">20</text>
+              <g class="player-name-label"><rect x="132" y="345.2" width="140" height="16" rx="3" fill="#0c1c33"/><text x="202" y="356.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Hasse Tobias</text></g>
             </g>
-            <g class="player-marker" data-num="11">
-              <circle cx="227.5" cy="270.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="227.5" y="274.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">11</text>
-              <g class="player-name-label"><rect x="163" y="235.0" width="130" height="16" rx="3" fill="#0c1c33"/><text x="228" y="246.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Schmidt Tino</text></g>
+            <g class="player-marker" data-num="27">
+              <circle cx="265.0" cy="375.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="265.0" y="379.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">27</text>
+              <g class="player-name-label"><rect x="195" y="340.0" width="140" height="16" rx="3" fill="#0c1c33"/><text x="265" y="351.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Büch Gordon</text></g>
+            </g>
+            <g class="player-marker" data-num="2">
+              <circle cx="138.0" cy="380.2" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="138.0" y="384.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">2</text>
+              <g class="player-name-label"><rect x="63" y="345.2" width="150" height="16" rx="3" fill="#0c1c33"/><text x="138" y="356.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">Kalckreuth Maximilian</text></g>
             </g>
             <g class="player-marker" data-num="6">
-              <circle cx="285.0" cy="270.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="285.0" y="274.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">6</text>
-              <g class="player-name-label"><rect x="206" y="235.0" width="130" height="16" rx="3" fill="#0c1c33"/><text x="271" y="246.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Wegener Paul</text></g>
+              <circle cx="170.0" cy="286.1" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="170.0" y="290.6" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">6</text>
+              <g class="player-name-label"><rect x="100" y="251.1" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="262.1" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Wegener Paul</text></g>
+            </g>
+            <g class="player-marker" data-num="18">
+              <circle cx="235.0" cy="280.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="235.0" y="285.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">18</text>
+              <g class="player-name-label"><rect x="165" y="245.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="235" y="256.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Ebel Amadeus</text></g>
+            </g>
+            <g class="player-marker" data-num="9">
+              <circle cx="95.0" cy="165.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="95.0" y="170.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">9</text>
+              <g class="player-name-label"><rect x="15" y="130.9" width="160" height="16" rx="3" fill="#0c1c33"/><text x="95" y="141.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Okpalaike Joshua</text></g>
             </g>
             <g class="player-marker" data-num="21">
-              <circle cx="170.0" cy="150.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="170.0" y="154.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">21</text>
-              <g class="player-name-label"><rect x="100" y="115.0" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="126.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Kang Min-Gi</text></g>
+              <circle cx="170.0" cy="155.5" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="170.0" y="160.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">21</text>
+              <g class="player-name-label"><rect x="100" y="120.5" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="131.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Kang Min-Gi</text></g>
+            </g>
+            <g class="player-marker" data-num="25">
+              <circle cx="245.0" cy="165.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="245.0" y="170.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">25</text>
+              <g class="player-name-label"><rect x="175" y="130.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="245" y="141.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Ogbidi Theo</text></g>
             </g>
 
             <!-- Stifthalterung + Schwamm, wie an einer echten Taktiktafel -->
@@ -1454,8 +1459,9 @@
               <g fill="#13294b"><rect x="8" y="27" width="46" height="4"/></g>
               <rect x="59" y="26" width="14" height="6" fill="#13294b"/>
               <g fill="#13294b"><rect x="8" y="35" width="40" height="4"/></g>
-              <!-- Roter Kicker-Button: klein und gedaempft, nur als leichter Akzent -->
-              <rect x="8" y="47" width="26" height="6" rx="1.5" fill="#b5676b"/>
+              <!-- Zwei kleine, gedaempfte Link-Buttons: Kicker (rot) + Verein (blau) -->
+              <rect x="8" y="47" width="24" height="6" rx="1.5" fill="#b5676b"/>
+              <rect x="36" y="47" width="24" height="6" rx="1.5" fill="#5c74c9"/>
               <!-- Angedeutete Textzeilen fuer den eigenen Bericht -->
               <g fill="#dcdfd0"><rect x="8" y="60" width="84" height="2.4"/><rect x="8" y="67" width="76" height="2.4"/><rect x="8" y="74" width="80" height="2.4"/><rect x="8" y="81" width="64" height="2.4"/><rect x="8" y="88" width="72" height="2.4"/><rect x="8" y="95" width="58" height="2.4"/></g>
             </svg>
@@ -1772,9 +1778,9 @@
 
   const SVB = 'SV Babelsberg 03';
   const FIXTURES = [
-    { month:'Juli 2026', date:'So 26.07.', home:'BSG Chemie Leipzig', away:SVB, score:'0:2', kicker:'https://www.kicker.de/chemie-leipzig-gegen-babelsberg-2026-regionalliga-nordost-5233596/spielbericht', id:'chemie-leipzig' },
-    { month:'Juli 2026', date:'Fr 31.07.', home:SVB, away:'Carl Zeiss Jena', score:'0:1', kicker:'https://www.kicker.de/babelsberg-gegen-jena-2026-regionalliga-nordost-5233607/spielbericht', id:'jena' },
-    { month:'August 2026', date:'Di 04.08.', home:SVB, away:'VSG Altglienicke', score:'2:2', kicker:'https://www.kicker.de/babelsberg-gegen-altglienicke-2026-regionalliga-nordost-5233611/spielbericht', id:'altglienicke' },
+    { month:'Juli 2026', date:'So 26.07.', home:'BSG Chemie Leipzig', away:SVB, score:'0:2', kicker:'https://www.kicker.de/chemie-leipzig-gegen-babelsberg-2026-regionalliga-nordost-5233596/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23568/auswartssieg-in-leutzsch', id:'chemie-leipzig' },
+    { month:'Juli 2026', date:'Fr 31.07.', home:SVB, away:'Carl Zeiss Jena', score:'0:1', kicker:'https://www.kicker.de/babelsberg-gegen-jena-2026-regionalliga-nordost-5233607/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23684/spater-gegentreffer-entscheidet-flutlichtduell-gegen-jena', id:'jena' },
+    { month:'August 2026', date:'Di 04.08.', home:SVB, away:'VSG Altglienicke', score:'2:2', kicker:'https://www.kicker.de/babelsberg-gegen-altglienicke-2026-regionalliga-nordost-5233611/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23746/spater-doppelschlag-verhindert-heimsieg-gegen-altglienicke', id:'altglienicke' },
     { month:'August 2026', date:'Di 11.08.', home:'1. FC Magdeburg II', away:SVB, time:'19:00' },
     { month:'August 2026', date:'Fr 14.08.', home:SVB, away:'RSV Eintracht', time:'19:00' },
     { month:'August 2026', date:'Mi 26.08.', home:'Greifswalder FC', away:SVB, time:'19:00' },
@@ -1887,10 +1893,10 @@
       <p class="poster-modal-eyebrow">Spielbericht</p>
       <h3>${f.home} <span class="report-score">${f.score}</span> ${f.away}</h3>
       <p class="report-meta">${f.date} ${year} &middot; Regionalliga Nordost</p>
-      <div class="report-body">
-        ${f.kicker
-          ? `<a class="report-kicker-link" href="${f.kicker}" target="_blank" rel="noopener">Spielbericht auf kicker.de &rsaquo;</a>`
-          : `<p>Für dieses Spiel gibt es noch keinen verlinkten Kicker-Spielbericht.</p>`}
+      <div class="report-body report-links">
+        ${f.kicker ? `<a class="report-link-btn report-link-kicker" href="${f.kicker}" target="_blank" rel="noopener">Bericht auf kicker.de &rsaquo;</a>` : ''}
+        ${f.verein ? `<a class="report-link-btn report-link-verein" href="${f.verein}" target="_blank" rel="noopener">Bericht auf babelsberg03.de &rsaquo;</a>` : ''}
+        ${(!f.kicker && !f.verein) ? `<p>Für dieses Spiel gibt es noch keinen verlinkten Spielbericht.</p>` : ''}
       </div>
       <div class="report-own">
         <p class="report-own-label">Eigener Bericht</p>
