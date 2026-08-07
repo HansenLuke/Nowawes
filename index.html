@@ -1351,9 +1351,9 @@
      werden, nicht mehr 20 einzelne SVG-Marker von Hand. */
   const SVB = 'SV Babelsberg 03';
   const FIXTURES = [
-    { month:'Juli 2026', date:'So 26.07.', home:'BSG Chemie Leipzig', away:SVB, score:'0:2', kicker:'https://www.kicker.de/chemie-leipzig-gegen-babelsberg-2026-regionalliga-nordost-5233596/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23568/auswartssieg-in-leutzsch', id:'chemie-leipzig' },
-    { month:'Juli 2026', date:'Fr 31.07.', home:SVB, away:'Carl Zeiss Jena', score:'0:1', kicker:'https://www.kicker.de/babelsberg-gegen-jena-2026-regionalliga-nordost-5233607/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23684/spater-gegentreffer-entscheidet-flutlichtduell-gegen-jena', id:'jena' },
-    { month:'August 2026', date:'Di 04.08.', home:SVB, away:'VSG Altglienicke', score:'2:2', kicker:'https://www.kicker.de/babelsberg-gegen-altglienicke-2026-regionalliga-nordost-5233611/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23746/spater-doppelschlag-verhindert-heimsieg-gegen-altglienicke', id:'altglienicke' },
+    { month:'Juli 2026', date:'So 26.07.', home:'BSG Chemie Leipzig', away:SVB, score:'0:2', kicker:'https://www.kicker.de/chemie-leipzig-gegen-babelsberg-2026-regionalliga-nordost-5233596/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23568/auswartssieg-in-leutzsch', id:'chemie-leipzig-auswaerts' },
+    { month:'Juli 2026', date:'Fr 31.07.', home:SVB, away:'Carl Zeiss Jena', score:'0:1', kicker:'https://www.kicker.de/babelsberg-gegen-jena-2026-regionalliga-nordost-5233607/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23684/spater-gegentreffer-entscheidet-flutlichtduell-gegen-jena', id:'jena-heim' },
+    { month:'August 2026', date:'Di 04.08.', home:SVB, away:'VSG Altglienicke', score:'2:2', kicker:'https://www.kicker.de/babelsberg-gegen-altglienicke-2026-regionalliga-nordost-5233611/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23746/spater-doppelschlag-verhindert-heimsieg-gegen-altglienicke', id:'altglienicke-heim' },
     { month:'August 2026', date:'Di 11.08.', home:'1. FC Magdeburg II', away:SVB, time:'19:00' },
     { month:'August 2026', date:'Fr 14.08.', home:SVB, away:'RSV Eintracht', time:'19:00' },
     { month:'August 2026', date:'Mi 26.08.', home:'Greifswalder FC', away:SVB, time:'19:00' },
@@ -1875,17 +1875,24 @@
      EIGENE SPIELBERICHTE - HIER SCHREIBEN
      ================================================================
      Fuer jedes gespielte Spiel steht unten ein Eintrag bereit (Schluessel
-     = die "id" aus dem FIXTURES-Eintrag oben, z.B. 'chemie-leipzig').
+     = die "id" aus dem FIXTURES-Eintrag oben, z.B. 'jena-heim').
      Einfach zwischen die Backticks `` ` ... ` `` schreiben - normaler Text
      reicht, einfache HTML-Tags wie <p>, <b>, <br> funktionieren auch.
      Bleibt ein Eintrag leer, zeigt die Seite automatisch einen Platzhalter
      mit Hinweis, dass hier noch Text fehlt.
-     Fuer neue Spiele: sobald ein neuer FIXTURES-Eintrag eine "id" bekommt,
-     hier einfach eine weitere Zeile nach dem gleichen Muster ergaenzen. */
+
+     WICHTIG - ID-Konvention wegen Hin-/Rueckspiel: jeder Gegner kommt in
+     FIXTURES zweimal vor (einmal Heim-, einmal Auswaertsspiel). Damit die
+     "id" nicht kollidiert, immer den Suffix "-heim" bzw. "-auswaerts"
+     anhaengen, je nachdem ob SVB in diesem Eintrag "home" oder "away" ist,
+     z.B. 'jena-heim' fuers Hinspiel und spaeter 'jena-auswaerts' fuers
+     Rueckspiel. Fuer neue Spiele: sobald ein FIXTURES-Eintrag so eine "id"
+     bekommt, hier einfach eine weitere Zeile nach dem gleichen Muster
+     ergaenzen. */
   const OWN_REPORTS = {
-    'chemie-leipzig': ``,   // <- Bericht zu BSG Chemie Leipzig 0:2 SV Babelsberg 03 (26.07.)
-    'jena':           ``,   // <- Bericht zu SV Babelsberg 03 0:1 Carl Zeiss Jena (31.07.)
-    'altglienicke':   ``    // <- Bericht zu SV Babelsberg 03 2:2 VSG Altglienicke (04.08.)
+    'chemie-leipzig-auswaerts': ``,   // <- Bericht zu BSG Chemie Leipzig 0:2 SV Babelsberg 03 (26.07.)
+    'jena-heim':                ``,   // <- Bericht zu SV Babelsberg 03 0:1 Carl Zeiss Jena (31.07.)
+    'altglienicke-heim':        ``    // <- Bericht zu SV Babelsberg 03 2:2 VSG Altglienicke (04.08.)
   };
 
   function renderReport(searchError){
