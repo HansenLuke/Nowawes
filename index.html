@@ -10,8 +10,8 @@
 <link rel="icon" href="favicon.png">
 <style>
   :root{
-    /* Diese beiden Werte werden zusätzlich per JS gesetzt (siehe TIMING-Objekt),
-       damit CSS-Animationsdauer und JS-Timeouts nie auseinanderdriften. */
+    /* These two values are also set via JS (see the TIMING object),
+       so CSS animation duration and JS timeouts never drift apart. */
     --iris-duration: 9800ms;
     --flash-duration: 420ms;
   }
@@ -23,8 +23,8 @@
     font-family:'Courier New', Courier, monospace;
   }
 
-  /* Registrierte Custom Property: macht --iris-r zwischen Keyframes weich
-     interpolierbar (normale Custom Properties springen sonst nur). */
+  /* Registered custom property: makes --iris-r smoothly interpolable
+     between keyframes (regular custom properties would otherwise just jump). */
   @property --iris-r{
     syntax: '<percentage>';
     inherits: false;
@@ -36,15 +36,15 @@
     position:fixed; inset:0;
     background:#0c0906;
     z-index:1000;
-    /* Zentrale Übergänge einmal definiert statt in mehreren Klassen doppelt -
-       so überschreiben sich .modern/.exiting/.invert nicht gegenseitig. */
+    /* Central transitions defined once instead of duplicated across multiple
+       classes - this way .modern/.exiting/.invert don't override each other. */
     transition: opacity 0.18s ease, background 0.05s linear, filter 0.05s linear;
   }
   #intro.hidden{ display:none; }
 
-  /* Grund-Flackern (Kontrast/Helligkeit) läuft rein per CSS, nicht mehr per
-     JS-RAF-Loop. steps(1,end) erzeugt harte Sprünge statt weicher Überblendung
-     - das wirkt für einen Flacker-Effekt authentischer als eine Ease-Kurve. */
+  /* Base flicker (contrast/brightness) now runs purely via CSS, no more
+     JS RAF loop. steps(1,end) creates hard jumps instead of a smooth
+     crossfade - this looks more authentic for a flicker effect than an ease curve. */
   #intro:not(.modern){
     animation: filmGrade 1.9s steps(1,end) infinite;
   }
@@ -60,10 +60,10 @@
     100% { filter: sepia(0.55) saturate(1.3) contrast(1.15) brightness(0.88); }
   }
 
-  /* Iris - die charakteristische Kreisblende des frühen Stummfilms.
-     Läuft über eine Alpha-Maske (mask-image) statt eines box-shadow mit
-     9999px Spread: das ist GPU-beschleunigt und erzwingt keine teuren
-     Neuberechnungen der Malfläche bei jedem Animationsschritt. */
+  /* Iris - the characteristic circular wipe of early silent film.
+     Runs via an alpha mask (mask-image) instead of a box-shadow with a
+     9999px spread: this is GPU-accelerated and doesn't force expensive
+     repaint recalculations on every animation step. */
   .iris-mask{
     position:absolute; inset:0;
     background:#000;
@@ -81,8 +81,8 @@
     100% { --iris-r: 0%; }
   }
 
-  /* Sprocket holes, left/right film-strip edges - laufen kontinuierlich durch,
-     als würde der Filmstreifen durchs Projektorfenster gezogen */
+  /* Sprocket holes, left/right film-strip edges - run continuously,
+     as if the film strip were being pulled through the projector gate */
   .sprockets{
     position:absolute; top:0; bottom:0; width:56px;
     overflow:hidden;
@@ -111,8 +111,8 @@
     to{ transform:translateY(60px); }
   }
 
-  /* deutlich unruhigeres Bild-Wackeln + Weben, wie bei einer
-     handgekurbelten Kamera um 1911 (unregelmäßige Kurbelgeschwindigkeit) */
+  /* noticeably jittery image wobble + weave, like a hand-cranked
+     camera around 1911 (irregular cranking speed) */
   .frame{
     position:absolute; inset:0;
     z-index:1;
@@ -130,7 +130,7 @@
     100% { margin-top:0px; }
   }
 
-  /* ---------- TITELKARTEN ---------- */
+  /* ---------- TITLE CARDS ---------- */
   .title-card{
     position:absolute; inset:0;
     z-index:8;
@@ -139,7 +139,7 @@
     text-align:center;
     pointer-events:none;
     opacity:0;
-    transition:opacity 0.04s linear; /* harter Schnitt wie an einer Filmklebestelle */
+    transition:opacity 0.04s linear; /* hard cut, like at a film splice */
   }
   .title-card.visible{ opacity:1; }
   .title-card .place{
@@ -169,9 +169,9 @@
     text-shadow:0 0 8px rgba(0,0,0,.5);
   }
 
-  /* ---------- FLASH-SEQUENZ: NULL / DREI ----------
-     Bruch zur Moderne: sobald NULL erscheint, schaltet die ganze Bühne
-     von der Stummfilm-Optik auf einen klaren, flachen Blauton um. */
+  /* ---------- FLASH SEQUENCE: NULL / DREI ----------
+     Break to modernity: as soon as NULL appears, the whole stage
+     switches from silent-film look to a clean, flat shade of blue. */
   #intro.modern{
     background:#0f3ee0;
     filter:none;
@@ -223,9 +223,9 @@
   }
 
   /* ---------- FILM DAMAGE OVERLAYS ---------- */
-  /* Filmkorn komplett ohne Canvas/JS: eine per SVG feTurbulence erzeugte
-     Rauschtextur wird gekachelt und ihre background-position per steps()
-     "gesprungen" - erzeugt einen flackernden Korn-Look rein aus CSS. */
+  /* Film grain entirely without Canvas/JS: a noise texture generated via
+     SVG feTurbulence is tiled, and its background-position is "jumped"
+     via steps() - creates a flickering grain look purely from CSS. */
   .grain-css{
     position:absolute; inset:0;
     z-index:10;
@@ -265,10 +265,10 @@
     100% { opacity: 0; }
   }
 
-  /* Grund-Flackern (weißer Überlagerungsblitz) läuft als CSS-Loop statt per
-     JS jeden Frame neu berechnet zu werden. Für die kurzen, gezielten
-     "Blitze" bei Schnitten/Klebestellen gibt es die .boost-Klasse, die per
-     JS nur an- und wieder abgeschaltet wird (kein Dauerlauf im JS-Thread). */
+  /* Base flicker (white overlay flash) runs as a CSS loop instead of being
+     recalculated every frame via JS. For the short, targeted "flashes" at
+     cuts/splices there's the .boost class, which JS only toggles on and
+     off (no continuous loop on the JS thread). */
   .flicker{
     position:absolute; inset:0;
     z-index:13;
@@ -348,10 +348,10 @@
   #intro.exiting{ opacity:0; }
 
   /* ---------- MAIN PAGE ----------
-     Token-System, direkt aus der Stadionkarte abgeleitet statt generischer
-     Defaultpalette: Navy aus der Grafik, Gold als Vereinsfarbe,
-     Anton (schon fuers Intro geladen) fuer die Countdown-Ziffern - bindet
-     den Countdown optisch an den NULL/DREI-Moment aus dem Intro zurueck. */
+     Token system, taken directly from the stadium map instead of a generic
+     default palette: navy from the graphic, gold as the club color,
+     Anton (already loaded for the intro) for the countdown digits - this
+     visually ties the countdown back to the NULL/DREI moment from the intro. */
   #page{
     --navy:#13294b;
     --navy-deep:#0c1c33;
@@ -424,9 +424,9 @@
   #page .league-table th:nth-child(1), #page .league-table td:nth-child(1){ width:44px; }
   #page .league-table th:nth-child(3), #page .league-table td:nth-child(3),
   #page .league-table th:nth-child(4), #page .league-table td:nth-child(4){ text-align:right; }
-  /* Lichtkegel: Ursprung eng an der Position des Lampenpanels (oben rechts),
-     faechert sich als klar begrenzter Kegel zum Countdown hin auf -
-     kein diffuses Glühen über die ganze Flaeche. */
+  /* Light cone: origin tight to the position of the lamp panel (top right),
+     fans out as a clearly bounded cone toward the countdown -
+     no diffuse glow across the whole area. */
   #page .spotlight-glow{
     position:absolute;
     inset:0;
@@ -467,9 +467,9 @@
     flex-wrap:wrap;
     margin:0 auto;
   }
-  /* Signatur-Element: Countdown-Boxen im Stil der Tribuenenbloecke A-O
-     aus der Stadionkarte - gleiche Formsprache, jetzt fuer Ziffern statt
-     Buchstaben. */
+  /* Signature element: countdown boxes in the style of the stand blocks A-O
+     from the stadium map - same visual language, now for digits instead
+     of letters. */
   #page .cd-box{
     background:var(--navy-deep);
     border:1px solid rgba(244,241,234,.25);
@@ -494,9 +494,9 @@
     margin-top:6px;
   }
 
-  /* ---------- AUFSTELLUNG & KADER ----------
-     Gleiche Struktur wie die Countdown-Sektion (volle Breite, Inhalt auf
-     1320px begrenzt, zweispaltig), aber mit weissem statt Navy-Hintergrund. */
+  /* ---------- LINEUP & SQUAD ----------
+     Same structure as the countdown section (full width, content capped
+     at 1320px, two columns), but with a white background instead of navy. */
   #page .lineup-section{
     background:#ffffff;
     padding:56px 24px;
@@ -525,10 +525,10 @@
   }
   #page .stat-block ol{
     list-style:none;
-    counter-reset:rank;
+    max-height:69px;
+    overflow-y:auto;
   }
   #page .stat-block ol li{
-    counter-increment:rank;
     display:flex;
     justify-content:space-between;
     gap:10px;
@@ -536,8 +536,7 @@
     font-size:13.5px;
     color:var(--ink);
   }
-  #page .stat-block ol li::before{
-    content:counter(rank)".";
+  #page .stat-block .stat-rank{
     color:var(--club-blue);
     font-weight:600;
     margin-right:6px;
@@ -545,7 +544,7 @@
   #page .stat-block .stat-name{ flex:1 1 auto; }
   #page .stat-block .stat-value{ flex:0 0 auto; color:var(--club-blue); font-weight:600; }
 
-  /* ---- Interaktive Magnete auf der Taktiktafel ---- */
+  /* ---- Interactive magnets on the tactics board ---- */
   #page .player-marker{ cursor:pointer; }
   #page .player-marker circle{ transition:transform .12s ease; transform-box:fill-box; transform-origin:center; }
   #page .player-marker:hover circle{ transform:scale(1.12); }
@@ -556,8 +555,8 @@
   }
   #page .player-marker:hover .player-name-label{ opacity:1; }
 
-  /* Hervorhebung in Kaderliste und Statistik, wenn der zugehoerige Magnet
-     auf der Taktiktafel per Hover aktiv ist (Klasse wird per JS gesetzt) */
+  /* Highlight in the squad list and stats when the corresponding magnet
+     on the tactics board is active via hover (class is set via JS) */
   #page .squad-list li.active-player{
     background:rgba(242,183,5,.16);
   }
@@ -616,16 +615,16 @@
     color:var(--club-blue);
   }
 
-  /* ---------- KARLI-MODELL, SPIELPLAN, SPIELBERICHTE ----------
-     Dritte Sektion, wieder auf Navy wie die Countdown-Sektion - volle
-     Breite aussen, Inhalt auf 1320px begrenzt, diesmal dreispaltig. */
+  /* ---------- KARLI MODEL, FIXTURES, MATCH REPORTS ----------
+     Third section, back on navy like the countdown section - full
+     width outside, content capped at 1320px, three columns this time. */
   #page .model-section{
     background:var(--navy);
     color:#f4f1ea;
     padding:40px 24px;
   }
 
-  /* Eingang zentriert, ca. 2/3 der Panel-Breite */
+  /* Entrance centered, roughly 2/3 of the panel width */
   #page .model-inner-full{ max-width:1320px; margin:0 auto; text-align:center; }
   #page .entrance-wrap{ position:relative; width:110vw; left:50%; transform:translateX(-50%); }
   #page .stand-graphic-full{ width:100%; display:block; }
@@ -655,13 +654,12 @@
       gap:36px;
     }
   }
-  /* ---------- POSTER-THUMBNAILS IN DEN FENSTERNISCHEN (Spielplan links,
-     Spielberichte rechts) + Zoom-Modal ----------
-     Positionierung in Prozent, abgeleitet aus den SVG-viewBox-Koordinaten der
-     Fensternischen (x=72-94 bzw. 206-228, y=123-153) relativ zur viewBox
-     (-150..450 breit, 60..210 hoch), damit die Thumbnails exakt in den
-     gezeichneten Nischen sitzen, unabhaengig von der tatsaechlichen
-     Renderbreite des Full-Bleed-SVGs. */
+  /* ---------- POSTER THUMBNAILS IN THE WINDOW NICHES (fixtures left,
+     match reports right) + zoom modal ----------
+     Positioned in percent, derived from the SVG viewBox coordinates of the
+     window niches (x=72-94 and 206-228, y=123-153) relative to the viewBox
+     (-150..450 wide, 60..210 tall), so the thumbnails sit exactly in the
+     drawn niches regardless of the actual render width of the full-bleed SVG. */
   #page .poster-thumb{
     position:absolute;
     top:42%; height:20%;
@@ -672,8 +670,8 @@
     z-index:5;
   }
   #page .poster-thumb::before{
-    /* vergroesserte, unsichtbare Trefferflaeche - die sichtbare Vorschau bleibt winzig,
-       aber Klick/Tap muss nicht pixelgenau sitzen */
+    /* enlarged, invisible hit area - the visible preview stays tiny,
+       but click/tap doesn't need to be pixel-perfect */
     content:"";
     position:absolute;
     inset:-10px;
@@ -737,7 +735,7 @@
     margin:0 0 10px;
   }
 
-  /* ---------- Spielplan-Tabelle im Poster-Modal ---------- */
+  /* ---------- Fixture list in the poster modal ---------- */
   #page .fixture-month{
     font-family:'Oswald', sans-serif; letter-spacing:2.5px; text-transform:uppercase;
     font-size:11px; color:var(--club-blue); margin:16px 0 6px;
@@ -764,7 +762,7 @@
     text-align:center; font-family:'Oswald', sans-serif; font-size:11.5px; color:var(--club-blue);
   }
 
-  /* ---------- Spielbericht-Blaetteransicht im Poster-Modal ---------- */
+  /* ---------- Match report pager view in the poster modal ---------- */
   #page .report-meta{
     font-family:'Oswald', sans-serif; font-size:12px; letter-spacing:0.5px;
     color:#6b7280; margin:-4px 0 16px;
@@ -826,8 +824,8 @@
   #page .report-counter{
     font-family:'Oswald', sans-serif; font-size:12.5px; color:#6b7280; letter-spacing:0.5px;
   }
-  /* Suche: bewusst zurueckhaltend, unten als kleine Utility-Zeile statt als
-     grosser, konkurrierender Block direkt unter dem Kicker-Button. */
+  /* Search: deliberately understated, placed at the bottom as a small
+     utility line instead of a large, competing block right under the kicker button. */
   #page .report-search{
     display:flex; align-items:center; gap:6px;
     margin-top:14px; padding-top:10px;
@@ -909,24 +907,6 @@
             <tr><th>Platz</th><th>Verein</th><th>Sp</th><th>Pkt</th></tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td>Chemnitzer FC</td><td>3</td><td>9</td></tr>
-            <tr><td>2</td><td>Rot-Weiß Erfurt</td><td>3</td><td>7</td></tr>
-            <tr><td>3</td><td>Greifswalder FC</td><td>3</td><td>7</td></tr>
-            <tr><td>4</td><td>Erzgebirge Aue</td><td>3</td><td>7</td></tr>
-            <tr><td>5</td><td>1. FC Lok Leipzig</td><td>3</td><td>7</td></tr>
-            <tr><td>6</td><td>Carl Zeiss Jena</td><td>3</td><td>6</td></tr>
-            <tr><td>7</td><td>Hallescher FC</td><td>3</td><td>5</td></tr>
-            <tr class="highlight-opponent"><td>8</td><td>1. FC Magdeburg II</td><td>3</td><td>4</td></tr>
-            <tr class="highlight"><td>9</td><td>SV Babelsberg 03</td><td>3</td><td>4</td></tr>
-            <tr><td>10</td><td>RSV Eintracht</td><td>3</td><td>4</td></tr>
-            <tr><td>11</td><td>BFC Dynamo</td><td>3</td><td>3</td></tr>
-            <tr><td>12</td><td>FSV Zwickau</td><td>3</td><td>3</td></tr>
-            <tr><td>13</td><td>FSV Luckenwalde</td><td>3</td><td>3</td></tr>
-            <tr><td>14</td><td>VSG Altglienicke</td><td>2</td><td>2</td></tr>
-            <tr><td>15</td><td>BFC Preussen</td><td>3</td><td>1</td></tr>
-            <tr><td>16</td><td>BSG Chemie Leipzig</td><td>3</td><td>0</td></tr>
-            <tr><td>17</td><td>Hertha BSC II</td><td>2</td><td>0</td></tr>
-            <tr><td>18</td><td>Tasmania Berlin</td><td>3</td><td>0</td></tr>
           </tbody>
         </table>
         </div>
@@ -943,10 +923,10 @@
       </div>
       <div class="feature-graphic">
         <svg viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schema des Klappflutlichtmasts: der Lichtkopf klappt oben am Mast ab, der untere Mast bleibt fest stehen">
-          <!-- Boden -->
+          <!-- Ground -->
           <line x1="10" y1="336" x2="370" y2="336" stroke="#f4f1ea" stroke-width="3" stroke-linecap="round"/>
 
-          <!-- Fester unterer Mast (steht fix, klappt nicht) -->
+          <!-- Fixed lower mast (stays put, doesn't fold) -->
           <line x1="300" y1="336" x2="300" y2="132" stroke="#f4f1ea" stroke-width="7" stroke-linecap="round"/>
           <line x1="294.0" y1="305.4" x2="306.0" y2="305.4" stroke="#f4f1ea" stroke-width="3"/>
           <line x1="294.0" y1="264.6" x2="306.0" y2="264.6" stroke="#f4f1ea" stroke-width="3"/>
@@ -955,40 +935,40 @@
           <line x1="294.0" y1="152.4" x2="306.0" y2="152.4" stroke="#f4f1ea" stroke-width="3"/>
           <rect x="286" y="336" width="28" height="8" rx="2" fill="#f4f1ea"/>
 
-          <!-- Geisterposition: abgeklappter Lichtkopf -->
+          <!-- Ghost position: folded-down light head -->
           <g stroke="#f4f1ea" fill="none" opacity="0.4">
             <line x1="300" y1="132" x2="334.5" y2="217.3" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="1 6.5"/>
             <rect x="313" y="196" width="46" height="30" rx="2" transform="rotate(68 336 211)" stroke-width="3"/>
           </g>
 
-          <!-- Schwenkbogen um den Kippunkt, mit Pfeilspitze -->
+          <!-- Swing arc around the pivot point, with arrowhead -->
           <path d="M 318.5 74.9 A 60 60 0 0 1 333.6 181.7" fill="none" stroke="#f2b705" stroke-width="3" stroke-dasharray="1 8" stroke-linecap="round"/>
           <polygon points="325.3 187.3 332.1 176.1 338.3 185.2" fill="#f2b705"/>
 
-          <!-- Kippgelenk-Plakette am Mast -->
+          <!-- Pivot-joint plaque on the mast -->
           <rect x="287.1" y="126.6" width="25.9" height="10.7" rx="1.5" fill="#f4f1ea" transform="rotate(-6 300 132)"/>
           <circle cx="300" cy="132" r="3.4" fill="#f2b705"/>
 
-          <!-- Aufrechter Lichtkopf (Hauptdarstellung) -->
+          <!-- Upright light head (main depiction) -->
           <line x1="300" y1="132" x2="309.6" y2="40.5" stroke="#f4f1ea" stroke-width="6.5" stroke-linecap="round"/>
           <line x1="297.4" y1="99.3" x2="309.3" y2="100.6" stroke="#f4f1ea" stroke-width="3"/>
           <line x1="300.8" y1="67.3" x2="312.7" y2="68.6" stroke="#f4f1ea" stroke-width="3"/>
 
-          <!-- Streben zum Lampenpanel -->
+          <!-- Struts to the lamp panel -->
           <line x1="307.7" y1="58.8" x2="272.3" y2="43.1" stroke="#f4f1ea" stroke-width="2.5"/>
           <line x1="307.7" y1="58.8" x2="343.9" y2="50.7" stroke="#f4f1ea" stroke-width="2.5"/>
 
-          <!-- Aussenrahmen -->
+          <!-- Outer frame -->
           <polygon points="272.5,2.9 352.1,11.3 347.5,55.1 267.9,46.7" fill="none" stroke="#f4f1ea" stroke-width="3.5"/>
 
-          <!-- Balken je Reihe (Schiene, auf der die Lampen sitzen) -->
+          <!-- Bar per row (rail the lamps sit on) -->
           <g stroke="#f4f1ea" stroke-width="4" stroke-linecap="round">
             <line x1="275.7" y1="11.3" x2="347.3" y2="18.8"/>
             <line x1="274.2" y1="25.2" x2="345.8" y2="32.8"/>
             <line x1="272.7" y1="39.2" x2="344.3" y2="46.7"/>
           </g>
 
-          <!-- Lampenpanel: drei Reihen -->
+          <!-- Lamp panel: three rows -->
           <g fill="#f2b705" stroke="#0c1c33" stroke-width="1.4">
             <rect x="276.9" y="7.2" width="9.4" height="9.4" rx="1.3" transform="rotate(6 281.6 11.9)"/>
             <rect x="296.8" y="9.3" width="9.4" height="9.4" rx="1.3" transform="rotate(6 301.5 14.0)"/>
@@ -1014,24 +994,15 @@
           <p class="eyebrow">Statistik</p>
           <div class="stat-block">
             <h3>Spieler des Spiels</h3>
-            <ol>
-              <li data-num="18"><span class="stat-name">Ebel Amadeus</span><span class="stat-value">1</span></li>
-            </ol>
+            <ol id="statMotm"></ol>
           </div>
           <div class="stat-block">
             <h3>Torschützen</h3>
-            <ol>
-              <li data-num="18"><span class="stat-name">Ebel Amadeus</span><span class="stat-value">2</span></li>
-              <li data-num="25"><span class="stat-name">Ogbidi Theo</span><span class="stat-value">1</span></li>
-              <li data-num="2"><span class="stat-name">Kalckreuth Maximilian</span><span class="stat-value">1</span></li>
-            </ol>
+            <ol id="statScorers"></ol>
           </div>
           <div class="stat-block">
             <h3>Vorlagengeber</h3>
-            <ol>
-              <li data-num="11"><span class="stat-name">Schmidt Tino</span><span class="stat-value">1</span></li>
-              <li data-num="21"><span class="stat-name">Kang Min-Gi</span><span class="stat-value">1</span></li>
-            </ol>
+            <ol id="statAssists"></ol>
           </div>
         </div>
         <div class="lineup-graphic">
@@ -1044,19 +1015,19 @@
               </pattern>
             </defs>
 
-            <!-- Aufhaenge-Oesen -->
+            <!-- Hanging eyelets -->
             <circle cx="110" cy="9" r="7" fill="none" stroke="#8a8f97" stroke-width="4"/>
             <circle cx="230" cy="9" r="7" fill="none" stroke="#8a8f97" stroke-width="4"/>
 
-            <!-- Alu-Rahmen der Taktiktafel: schmaler, einheitlicher Bezel auf allen Seiten -->
+            <!-- Aluminum frame of the tactics board: narrow, uniform bezel on all sides -->
             <rect x="2" y="2" width="336" height="516" rx="16" fill="#d7d9dc" stroke="#9a9ea5" stroke-width="2"/>
             <rect x="16" y="16" width="308" height="488" rx="8" fill="#9a9ea5"/>
 
-            <!-- Gruene Tafel-Oberflaeche: nimmt wieder die komplette Flaeche ein,
-                 der vormals verbreiterte Rand ist jetzt Teil des Spielfelds -->
+            <!-- Green board surface: takes up the full area again,
+                 the formerly widened border is now part of the pitch -->
             <rect x="24" y="24" width="292" height="472" rx="4" fill="url(#grass)"/>
 
-            <!-- Spielfeld-Markierungen: fuellen die gruene Flaeche komplett aus -->
+            <!-- Pitch markings: fill the green area completely -->
             <rect x="30" y="30" width="280" height="460" fill="none" stroke="#f4f1ea" stroke-width="3"/>
             <line x1="30" y1="260" x2="310" y2="260" stroke="#f4f1ea" stroke-width="2"/>
             <circle cx="170" cy="260" r="47" fill="none" stroke="#f4f1ea" stroke-width="2"/>
@@ -1066,43 +1037,43 @@
             <rect x="110" y="395.9" width="120" height="94.1" fill="none" stroke="#f4f1ea" stroke-width="2"/>
             <rect x="140" y="453.4" width="60" height="36.6" fill="none" stroke="#f4f1ea" stroke-width="2"/>
 
-            <!-- Ersatzmarker (Bank) + Startelf-Marker: werden per JS aus den
-                 zentralen SQUAD/BOARD-Datenobjekten generiert (siehe Script
-                 am Seitenende), damit Name/Nummer nicht mehr getrennt in
-                 Kaderliste UND Taktiktafel gepflegt werden muessen. -->
+            <!-- Substitute markers (bench) + starting-lineup markers: generated via JS
+                 from the central SQUAD/BOARD data objects (see script at the
+                 bottom of the page), so name/number no longer have to be
+                 maintained separately in the squad list AND the tactics board. -->
             <g id="benchMarkers"></g>
 
-            <!-- Schemenhafte Marker-Skizze: Kang zieht auf den linken Fluegel,
-                 von dort kommt die Flanke/der Pass zum langen Pfosten, wo
-                 Ogbidi nur noch einschieben muss. -->
+            <!-- Sketchy marker diagram: Kang drifts out to the left wing,
+                 from there comes the cross/pass to the far post, where
+                 Ogbidi just has to tap it in. -->
             <defs>
               <marker id="sketchArrow" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto">
                 <path d="M0,0 L9,4.5 L0,9 L2.8,4.5 Z" fill="#141414" opacity="0.82"/>
               </marker>
             </defs>
             <g fill="none" stroke="#141414" opacity="0.82" stroke-linecap="round">
-              <!-- Kangs Laufweg auf den linken Fluegel, fast bis zur Grundlinie (gestrichelt) -->
+              <!-- Kang's run out to the left wing, almost to the byline (dashed) -->
               <path d="M170,155.5 Q95,105 42,36" stroke-width="1.8" stroke-dasharray="5 4"/>
-              <!-- Kangs Pass/Flanke zum langen Pfosten -->
+              <!-- Kang's pass/cross to the far post -->
               <path d="M42,36 Q125,48 205,48" stroke-width="2.3" marker-end="url(#sketchArrow)"/>
-              <!-- Ogbidis kurzer Einschuss aus kurzer Distanz -->
+              <!-- Ogbidi's short tap-in from close range -->
               <path d="M245,165.9 Q222,105 205,48" stroke-width="1.8" stroke-dasharray="5 4"/>
               <path d="M205,48 L188,38" stroke-width="2.3" marker-end="url(#sketchArrow)"/>
             </g>
 
             <g id="startMarkers"></g>
 
-            <!-- Stifthalterung + Schwamm, wie an einer echten Taktiktafel -->
-            <!-- Ablage als klare Stufe: helle Flaeche oben, dunklere Vorderkante
-                 darunter - beide werden VOR Stift/Schwamm gezeichnet, sodass
-                 nichts nachtraeglich über die Objekte gemalt wird und klippt. -->
+            <!-- Pen holder + eraser, like on a real tactics board -->
+            <!-- Tray as a clear step: light surface on top, darker front edge
+                 below - both are drawn BEFORE the pen/eraser, so nothing is
+                 later painted over the objects and clips. -->
             <rect x="30" y="500" width="280" height="8" rx="3" fill="#c7cad0"/>
             <rect x="30" y="500" width="280" height="2" rx="1" fill="#ffffff" opacity="0.5"/>
             <rect x="30" y="506" width="280" height="9" rx="3" fill="#8f939a"/>
             <rect x="30" y="506" width="280" height="9" rx="3" fill="none" stroke="#70747c" stroke-width="1"/>
 
-            <!-- Marker-Stift: schwarz, sitzt mit der Unterkante genau auf
-                 der Vorderkante auf -->
+            <!-- Marker pen: black, sits with its bottom edge exactly on
+                 the front edge -->
             <g transform="rotate(-3 165 500)">
               <rect x="123" y="494" width="68" height="12" rx="6" fill="#141414"/>
               <rect x="141" y="494" width="1.4" height="12" fill="#3a3a3a" opacity="0.8"/>
@@ -1112,9 +1083,9 @@
               <circle cx="200.5" cy="500" r="1.1" fill="#181818"/>
             </g>
 
-            <!-- Schwamm: einfacher zweifarbiger Block wie im Referenzbild -
-                 oben gold, unten schwarz. Der Farbschnitt laeuft ueber einen
-                 clipPath, damit an der Naht keine Eck-Rundungen kollidieren. -->
+            <!-- Eraser: simple two-tone block like in the reference image -
+                 gold on top, black on the bottom. The color split runs via a
+                 clipPath so the corner rounding doesn't collide at the seam. -->
             <defs>
               <clipPath id="eraserTopClip">
                 <rect x="250" y="487" width="46" height="12"/>
@@ -1141,9 +1112,9 @@
     <section class="model-section">
       <div class="model-inner-full">
 
-        <!-- Stadion-Eingang jetzt gross und zentriert, mit mehr Detailtiefe
-             fuer die neue Groesse: mehr Fugenreihen, kleine Fensternischen,
-             Plaketten, Baumkronen im Hintergrund, Buergersteig -->
+        <!-- Stadium entrance now large and centered, with more depth of detail
+             for the new size: more mortar-joint rows, small window niches,
+             plaques, tree canopies in the background, sidewalk -->
         <div class="entrance-wrap">
           <svg class="stand-graphic-full" viewBox="-150 60 600 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vereinfachte Illustration des Stadion-Eingangs mit Schriftzug Karl-Liebknecht-Stadion, Backsteinmauern und einem Tor">
             <defs>
@@ -1156,24 +1127,24 @@
               </pattern>
             </defs>
 
-            <!-- Zwei Baeume, jetzt mit organischerer, ungleichmaessiger Kronensilhouette (mehrere
-                 unterschiedlich grosse Kreise statt 3 gleicher Kugeln, dazu eine hellere
-                 "Lichtseite" oben links) und leicht verjuengtem Stamm mit Faserzeichnung.
-                 Krone + Stamm werden vor der Gitterflaeche/-linien gezeichnet, damit beide wie
-                 gewuenscht dahinter sichtbar durchscheinen. Beide Baeume sind jetzt gleich gross
-                 und spiegelsymmetrisch (identisches Kreis-Muster, links/rechts gespiegelt), und
-                 insgesamt weiter unten platziert, damit keine Kronen-Kreise mehr ueber den oberen
-                 viewBox-Rand (y=60) hinausragen und dort abgeschnitten werden. Keine separaten
-                 hellen Highlight-Kreise mehr - nur noch der dunkle Basis- und der mittlere
-                 Gruenton, damit die Krone einheitlicher wirkt. -->
+            <!-- Two trees, now with a more organic, uneven canopy silhouette (several
+                 differently sized circles instead of 3 identical balls, plus a lighter
+                 "sunlit side" top left) and a slightly tapered trunk with grain lines.
+                 Canopy + trunk are drawn before the grid area/lines, so both remain
+                 visible showing through behind it, as intended. Both trees are now the
+                 same size and mirror-symmetric (identical circle pattern, mirrored
+                 left/right), and placed further down overall so no canopy circles
+                 extend past the top viewBox edge (y=60) and get clipped there. No
+                 separate light highlight circles anymore - just the dark base tone and
+                 the mid green tone, so the canopy looks more uniform. -->
             <g>
-              <!-- linker Baum -->
+              <!-- left tree -->
               <circle cx="-60" cy="92" r="21" fill="#1f3a24"/>
               <circle cx="-43" cy="102" r="13" fill="#2f4f32"/>
               <circle cx="-78" cy="103" r="14" fill="#2f4f32"/>
               <circle cx="-66" cy="80" r="13" fill="#2f4f32"/>
               <circle cx="-50" cy="84" r="11" fill="#2f4f32"/>
-              <!-- rechter Baum, spiegelbildlich zum linken, gleicher Abstand zur Pforte wie links -->
+              <!-- right tree, mirrored from the left one, same distance to the gate as on the left -->
               <circle cx="360" cy="92" r="21" fill="#1f3a24"/>
               <circle cx="343" cy="102" r="13" fill="#2f4f32"/>
               <circle cx="378" cy="103" r="14" fill="#2f4f32"/>
@@ -1181,8 +1152,8 @@
               <circle cx="350" cy="84" r="11" fill="#2f4f32"/>
             </g>
 
-            <!-- Staemme: leicht verjuengt (unten breiter, oben schmaler), mit Licht-/Schattenlinie
-                 fuer Rundung. Beide Staemme gleich verdickt, spiegelsymmetrisch. -->
+            <!-- Trunks: slightly tapered (wider at the bottom, narrower at the top), with a
+                 light/shadow line for roundness. Both trunks thickened equally, mirror-symmetric. -->
             <g>
               <polygon points="-63.3,195 -62,101 -58,101 -56.7,195" fill="#3f2b1c"/>
               <polygon points="-57.5,195 -58.5,101 -59.5,101 -59.1,195" fill="#5c4028" opacity="0.55"/>
@@ -1192,9 +1163,9 @@
               <polygon points="361.5,195 361,101 361.8,101 362.4,195" fill="#241609" opacity="0.4"/>
             </g>
 
-            <!-- Weicher Uebergang Stamm -> Krone: ein paar zusaetzliche Kronen-Kreise genau ueber
-                 der Stamm-Oberkante, damit die scharfe gerade Kante des Stamms nicht mehr sichtbar
-                 an die runde Krone stoesst, sondern das Laub optisch ueber den Stammansatz greift. -->
+            <!-- Soft transition trunk -> canopy: a few extra canopy circles right above
+                 the trunk's top edge, so the trunk's sharp straight edge no longer visibly
+                 butts against the round canopy, but the foliage visually overlaps the trunk base. -->
             <g>
               <circle cx="-60" cy="99" r="11" fill="#1f3a24"/>
               <circle cx="-64" cy="95" r="7" fill="#2f4f32"/>
@@ -1202,21 +1173,21 @@
               <circle cx="364" cy="95" r="7" fill="#2f4f32"/>
             </g>
 
-            <!-- Buergersteig -->
+            <!-- Sidewalk -->
             <rect x="15" y="195" width="270" height="10" fill="#5a6b8c"/>
             <line x1="15" y1="195" x2="285" y2="195" stroke="#8a97b5" stroke-width="2.5"/>
             <line x1="15" y1="205" x2="285" y2="205" stroke="#3a4a68" stroke-width="1.5"/>
 
-            <!-- Backsteinmauern mit echtem Ziegel-Pattern (versetzte Fugen) -->
+            <!-- Brick walls with a real brick pattern (staggered mortar joints) -->
             <rect x="46" y="105" width="74" height="90" fill="url(#brickPattern)" stroke="#5c3327" stroke-width="1.2"/>
             <rect x="180" y="105" width="74" height="90" fill="url(#brickPattern)" stroke="#5c3327" stroke-width="1.2"/>
-            <!-- Fensternischen, mittig im verbreiterten Mauerstueck -->
+            <!-- Window niches, centered in the widened wall section -->
             <rect x="72" y="123" width="22" height="30" fill="#0c1c33" stroke="#5c3327" stroke-width="1"/>
             <rect x="206" y="123" width="22" height="30" fill="#0c1c33" stroke="#5c3327" stroke-width="1"/>
 
-            <!-- Aussenbereich als Gitter, jetzt ueber den nochmal erweiterten viewBox-Bereich.
-                 Nur leicht getoent (statt voll deckend), damit der Baumstamm dahinter sichtbar
-                 bleibt. -->
+            <!-- Outer area as a grid/fence, now spanning the once again extended viewBox
+                 area. Only lightly tinted (instead of fully opaque), so the tree trunk
+                 behind it stays visible. -->
             <rect x="-150" y="105" width="196" height="90" fill="#0c1c33" opacity="0.35"/>
             <rect x="254" y="105" width="196" height="90" fill="#0c1c33" opacity="0.35"/>
             <g stroke="#8090ab" stroke-width="1" opacity="0.85">
@@ -1227,26 +1198,26 @@
               <line x1="254" y1="105" x2="450" y2="105"/><line x1="254" y1="114" x2="450" y2="114"/><line x1="254" y1="123" x2="450" y2="123"/><line x1="254" y1="132" x2="450" y2="132"/><line x1="254" y1="141" x2="450" y2="141"/><line x1="254" y1="150" x2="450" y2="150"/><line x1="254" y1="159" x2="450" y2="159"/><line x1="254" y1="168" x2="450" y2="168"/><line x1="254" y1="177" x2="450" y2="177"/><line x1="254" y1="186" x2="450" y2="186"/><line x1="254" y1="195" x2="450" y2="195"/>
             </g>
 
-            <!-- Das Tor mit engem, haertem Gitter und weisser Mittelsaeule -->
+            <!-- The gate with a tight, hard grid and white center column -->
             <rect x="120" y="105" width="60" height="90" fill="#0c1c33"/>
             <g stroke="#8090ab" stroke-width="1" opacity="0.85">
               <line x1="125" y1="105" x2="125" y2="195"/><line x1="130" y1="105" x2="130" y2="195"/><line x1="135" y1="105" x2="135" y2="195"/><line x1="140" y1="105" x2="140" y2="195"/><line x1="145" y1="105" x2="145" y2="195"/><line x1="150" y1="105" x2="150" y2="195"/><line x1="155" y1="105" x2="155" y2="195"/><line x1="160" y1="105" x2="160" y2="195"/><line x1="165" y1="105" x2="165" y2="195"/><line x1="170" y1="105" x2="170" y2="195"/><line x1="175" y1="105" x2="175" y2="195"/>
               <line x1="120" y1="114" x2="180" y2="114"/><line x1="120" y1="123" x2="180" y2="123"/><line x1="120" y1="132" x2="180" y2="132"/><line x1="120" y1="141" x2="180" y2="141"/><line x1="120" y1="150" x2="180" y2="150"/><line x1="120" y1="159" x2="180" y2="159"/><line x1="120" y1="168" x2="180" y2="168"/><line x1="120" y1="177" x2="180" y2="177"/><line x1="120" y1="186" x2="180" y2="186"/>
             </g>
 
-            <!-- Blaue Saeulen und weisse Mittelsaeule, von Vordach bis Boden -->
+            <!-- Blue columns and white center column, from canopy roof to ground -->
             <rect x="26" y="70" width="8" height="125" fill="#28417a"/>
             <rect x="266" y="70" width="8" height="125" fill="#28417a"/>
             <rect x="146" y="72" width="8" height="123" fill="#ffffff"/>
 
-            <!-- Vordach mit Schriftzug -->
+            <!-- Canopy roof with lettering -->
             <polygon points="10,70 290,70 290,105 10,105" fill="#28417a"/>
             <text x="150" y="91" text-anchor="middle" font-family="Oswald, sans-serif" font-weight="700" font-size="12" letter-spacing="1" fill="#ffffff">KARL-LIEBKNECHT-STADION</text>
             <line x1="26" y1="88" x2="48" y2="88" stroke="#ffffff" stroke-width="2.5"/>
             <line x1="252" y1="88" x2="274" y2="88" stroke="#ffffff" stroke-width="2.5"/>
 
-            <!-- Metallgelaender davor, wie im Referenzfoto - Rail beginnt und
-                 endet buendig mit einem Pfeiler, kein Ueberstand mehr -->
+            <!-- Metal railing in front, like in the reference photo - rail starts and
+                 ends flush with a post, no more overhang -->
             <g stroke="#1c1c1c" stroke-width="2" fill="#1c1c1c">
               <line x1="8" y1="190" x2="292" y2="190"/>
               <line x1="8" y1="200" x2="292" y2="200"/>
@@ -1262,10 +1233,10 @@
             </g>
           </svg>
 
-          <!-- Winzige Poster-Vorschauen in den Fensternischen: links Spielplan, rechts
-               Spielberichte. Bilden das Design des Zoom-Inhalts en miniature/unleserlich ab
-               (Titel oben lesbar, Zeilen darunter nur angedeutet). Klick oeffnet das volle
-               Zoom-Modal mit dem echten Inhalt. -->
+          <!-- Tiny poster previews in the window niches: fixtures on the left, match
+               reports on the right. Reflect the design of the zoomed content in
+               miniature/illegible form (title readable at the top, lines below only
+               suggested). Click opens the full zoom modal with the real content. -->
           <button class="poster-thumb poster-thumb-left" type="button" data-poster="spielplan" aria-label="Spielplan öffnen">
             <svg class="poster-thumb-inner" viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="0" y="0" width="100" height="140" fill="#f6f7ef" stroke="#00000055" stroke-width="1"/>
@@ -1293,25 +1264,25 @@
           </button>
           <button class="poster-thumb poster-thumb-right" type="button" data-poster="spielberichte" aria-label="Spielberichte öffnen">
             <svg class="poster-thumb-inner" viewBox="0 0 108 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- Gestapelte Seiten dahinter: nur die Kanten sichtbar, deuten an, dass es
-                   mehrere Spielberichte uebereinander sind -->
+              <!-- Stacked pages behind it: only the edges are visible, suggesting there
+                   are several match reports on top of each other -->
               <rect x="8" y="8" width="100" height="140" fill="#e5e7d6" stroke="#00000030" stroke-width="1"/>
               <rect x="4" y="4" width="100" height="140" fill="#eef0e2" stroke="#00000040" stroke-width="1"/>
-              <!-- Vorderste Seite: einfache Andeutung des echten Layouts -
-                   Ueberschrift mit Score-Badge, roter Kicker-Button, darunter
-                   angedeutete Textzeilen fuer den eigenen Bericht. Bewusst
-                   reduziert, damit es auf dieser Groesse nicht ueberladen wirkt. -->
+              <!-- Front page: simple suggestion of the real layout -
+                   headline with score badge, red kicker button, below that
+                   suggested text lines for the own report. Deliberately
+                   reduced so it doesn't look cluttered at this size. -->
               <rect x="0" y="0" width="100" height="140" fill="#f6f7ef" stroke="#00000055" stroke-width="1"/>
               <text x="50" y="13" text-anchor="middle" font-family="Oswald, sans-serif" font-weight="700" font-size="9.5" letter-spacing="0" fill="#0f3ee0">SPIELBERICHTE</text>
               <line x1="8" y1="19" x2="92" y2="19" stroke="#13294b" stroke-opacity="0.15"/>
-              <!-- Ueberschrift: Team 1 + Score-Badge, Team 2 in zweiter Zeile -->
+              <!-- Headline: team 1 + score badge, team 2 on the second line -->
               <g fill="#13294b"><rect x="8" y="27" width="46" height="4"/></g>
               <rect x="59" y="26" width="14" height="6" fill="#13294b"/>
               <g fill="#13294b"><rect x="8" y="35" width="40" height="4"/></g>
-              <!-- Zwei kleine, gedaempfte Link-Buttons: Kicker (rot) + Verein (blau) -->
+              <!-- Two small, muted link buttons: kicker (red) + club (blue) -->
               <rect x="8" y="47" width="24" height="6" rx="1.5" fill="#b5676b"/>
               <rect x="36" y="47" width="24" height="6" rx="1.5" fill="#5c74c9"/>
-              <!-- Angedeutete Textzeilen fuer den eigenen Bericht -->
+              <!-- Suggested text lines for the own report -->
               <g fill="#dcdfd0"><rect x="8" y="60" width="84" height="2.4"/><rect x="8" y="67" width="76" height="2.4"/><rect x="8" y="74" width="80" height="2.4"/><rect x="8" y="81" width="64" height="2.4"/><rect x="8" y="88" width="72" height="2.4"/><rect x="8" y="95" width="58" height="2.4"/></g>
             </svg>
           </button>
@@ -1320,11 +1291,11 @@
     </section>
 
     <footer class="site-footer">
-      inofficial. non-profit, not approved by the club, a mere passion driven fan-project
+      inofficial, non-profit, not approved by the club, a mere passion driven fan-project
     </footer>
 
-    <!-- Zoom-Modal fuer die Poster-Thumbnails (Spielplan / Spielberichte). Muss INNERHALB von
-         #page liegen, weil alle zugehoerigen CSS-Regeln mit "#page .poster-modal" gescoped sind. -->
+    <!-- Zoom modal for the poster thumbnails (fixtures / match reports). Must be INSIDE
+         #page, because all related CSS rules are scoped with "#page .poster-modal". -->
     <div class="poster-modal" id="posterModal" aria-hidden="true">
       <div class="poster-modal-backdrop" id="posterModalBackdrop"></div>
       <div class="poster-modal-panel" role="dialog" aria-modal="true" aria-label="Poster-Ansicht">
@@ -1336,24 +1307,24 @@
 
 <script>
 /* ================================================================
-   ZENTRALE DATEN: FIXTURES (Spielplan/Ergebnisse) und SQUAD (Kader).
+   CENTRAL DATA: FIXTURES (schedule/results) and SQUAD (roster).
    ================================================================
-   Beides steht hier EINMAL an zentraler Stelle statt an mehreren Stellen
-   im Dokument dupliziert zu werden:
-   - FIXTURES speist Tabelle-Kontext, Countdown, Spielplan-Modal UND
-     Spielberichte-Modal (dort weiter unten im zweiten <script>-Block
-     referenziert - Variablen aus diesem Top-Level-Scope sind fuer alle
-     nachfolgenden <script>-Bloecke der Seite sichtbar).
-   - SQUAD + BOARD speisen sowohl die Kaderliste als auch die Marker auf
-     der Taktiktafel (Bank + Startelf). BOARD haelt nur noch Positionen
-     ("wo auf dem Feld"), SQUAD nur noch Personendaten ("wer") - beim
-     naechsten Formationswechsel muss dadurch nur noch BOARD angepasst
-     werden, nicht mehr 20 einzelne SVG-Marker von Hand. */
+   Both live here ONCE in a central place instead of being duplicated
+   across multiple spots in the document:
+   - FIXTURES feeds the table context, the countdown, the fixtures modal
+     AND the match-report modal (referenced further down in the second
+     <script> block - variables from this top-level scope are visible to
+     all subsequent <script> blocks on the page).
+   - SQUAD + BOARD feed both the squad list and the markers on the
+     tactics board (bench + starting lineup). BOARD only holds positions
+     ("where on the pitch"), SQUAD only holds person data ("who") - so the
+     next formation change only requires adjusting BOARD, not 20
+     individual SVG markers by hand. */
   const SVB = 'SV Babelsberg 03';
   const FIXTURES = [
-    { month:'Juli 2026', date:'So 26.07.', home:'BSG Chemie Leipzig', away:SVB, score:'0:2', kicker:'https://www.kicker.de/chemie-leipzig-gegen-babelsberg-2026-regionalliga-nordost-5233596/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23568/auswartssieg-in-leutzsch', id:'chemie-leipzig-auswaerts' },
-    { month:'Juli 2026', date:'Fr 31.07.', home:SVB, away:'Carl Zeiss Jena', score:'0:1', kicker:'https://www.kicker.de/babelsberg-gegen-jena-2026-regionalliga-nordost-5233607/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23684/spater-gegentreffer-entscheidet-flutlichtduell-gegen-jena', id:'jena-heim' },
-    { month:'August 2026', date:'Di 04.08.', home:SVB, away:'VSG Altglienicke', score:'2:2', kicker:'https://www.kicker.de/babelsberg-gegen-altglienicke-2026-regionalliga-nordost-5233611/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23746/spater-doppelschlag-verhindert-heimsieg-gegen-altglienicke', id:'altglienicke-heim' },
+    { month:'Juli 2026', date:'So 26.07.', home:'BSG Chemie Leipzig', away:SVB, score:'0:2', kicker:'https://www.kicker.de/chemie-leipzig-gegen-babelsberg-2026-regionalliga-nordost-5233596/spielbericht', babelsberg03:'https://www.babelsberg03.de/nachrichten/erste-herren/23568/auswartssieg-in-leutzsch', id:'chemie-leipzig-away' },
+    { month:'Juli 2026', date:'Fr 31.07.', home:SVB, away:'Carl Zeiss Jena', score:'0:1', kicker:'https://www.kicker.de/babelsberg-gegen-jena-2026-regionalliga-nordost-5233607/spielbericht', babelsberg03:'https://www.babelsberg03.de/nachrichten/erste-herren/23684/spater-gegentreffer-entscheidet-flutlichtduell-gegen-jena', id:'jena-home' },
+    { month:'August 2026', date:'Di 04.08.', home:SVB, away:'VSG Altglienicke', score:'2:2', kicker:'https://www.kicker.de/babelsberg-gegen-altglienicke-2026-regionalliga-nordost-5233611/spielbericht', babelsberg03:'https://www.babelsberg03.de/nachrichten/erste-herren/23746/spater-doppelschlag-verhindert-heimsieg-gegen-altglienicke', id:'altglienicke-home' },
     { month:'August 2026', date:'Di 11.08.', home:'1. FC Magdeburg II', away:SVB, time:'19:00' },
     { month:'August 2026', date:'Fr 14.08.', home:SVB, away:'RSV Eintracht', time:'19:00' },
     { month:'August 2026', date:'Mi 26.08.', home:'Greifswalder FC', away:SVB, time:'19:00' },
@@ -1416,10 +1387,10 @@
     { num:'29', name:'Gollnack Simon', pos:'ST' }
   ];
 
-  /* Taktiktafel-Positionen (4-3-3). "bench:true" = Ersatzmarker am
-     Metallrand, sonst Feldposition. x/y sind SVG-Koordinaten innerhalb
-     der pitch-graphic-viewBox (0 0 340 520), 1:1 aus dem vorherigen
-     handgezeichneten Layout uebernommen. */
+  /* Tactics board positions (4-3-3). "bench:true" = substitute marker on
+     the metal rim, otherwise a pitch position. x/y are SVG coordinates
+     within the pitch-graphic viewBox (0 0 340 520), taken 1:1 from the
+     previous hand-drawn layout. */
   const BOARD = [
     { num:'19', x:13, y:30,    bench:true },
     { num:'5',  x:13, y:87.5,  bench:true },
@@ -1445,10 +1416,10 @@
 
   function playerByNum(num){ return SQUAD.find(p => p.num === String(num)); }
 
-  /* Grobe, aber grosszuegige Breitenschaetzung fuer das Hover-Namensschild -
-     ersetzt die vorher von Hand pro Spieler eingestellten Pixelwerte. Nicht
-     pixelgenau, aber deckt jeden Namen sicher ab (lieber etwas Luft im
-     Label als abgeschnittener Text). */
+  /* Rough but generous width estimate for the hover name tag - replaces
+     the pixel values that were previously set by hand per player. Not
+     pixel-perfect, but reliably covers every name (better a bit of extra
+     space in the label than clipped text). */
   function estimateLabelWidth(name){
     return Math.max(100, Math.min(180, Math.round(name.length * 7.5 + 35)));
   }
@@ -1490,8 +1461,108 @@
     ul.innerHTML = SQUAD.map(p => `<li data-num="${p.num}"><span class="num">${p.display || p.num}</span><span class="name">${p.name}</span><span class="pos">${p.pos}</span></li>`).join('');
   }
 
+  /* League table: only points/games/goal difference need to be entered here -
+     rank AND row order are calculated automatically (sorted by points, then
+     goal difference), so nobody has to manually cut/paste table rows around
+     after a matchday. If points AND goal difference are tied (no goals-scored
+     field is tracked here), alphabetical order decides between those rows -
+     no manual sorting needed there either. */
+  const TABLE_DATA = [
+    { team:'Chemnitzer FC',        played:3, points:9, diff:9 },
+    { team:'Rot-Weiß Erfurt',      played:3, points:7, diff:9 },
+    { team:'Greifswalder FC',      played:3, points:7, diff:6 },
+    { team:'Erzgebirge Aue',       played:3, points:7, diff:3 },
+    { team:'1. FC Lok Leipzig',    played:3, points:7, diff:3 },
+    { team:'Carl Zeiss Jena',      played:3, points:6, diff:4 },
+    { team:'Hallescher FC',        played:3, points:5, diff:1 },
+    { team:'1. FC Magdeburg II',   played:3, points:4, diff:3 },
+    { team:'SV Babelsberg 03',     played:3, points:4, diff:1 },
+    { team:'RSV Eintracht',        played:3, points:4, diff:-1 },
+    { team:'BFC Dynamo',           played:3, points:3, diff:-2 },
+    { team:'FSV Zwickau',          played:3, points:3, diff:-4 },
+    { team:'FSV Luckenwalde',      played:3, points:3, diff:-4 },
+    { team:'VSG Altglienicke',     played:2, points:2, diff:0 },
+    { team:'BFC Preussen',         played:3, points:1, diff:-4 },
+    { team:'BSG Chemie Leipzig',   played:3, points:0, diff:-5 },
+    { team:'Hertha BSC II',        played:2, points:0, diff:-7 },
+    { team:'Tasmania Berlin',      played:3, points:0, diff:-12 }
+  ];
+
+  function renderLeagueTable(){
+    const tbody = document.querySelector('.league-table tbody');
+    if(!tbody) return;
+    const nextMatch = FIXTURES.find(f => !f.score);
+    const opponent = nextMatch ? (nextMatch.home === SVB ? nextMatch.away : nextMatch.home) : null;
+    const sorted = [...TABLE_DATA].sort((a, b) => b.points - a.points || b.diff - a.diff || a.team.localeCompare(b.team, 'de'));
+    tbody.innerHTML = sorted.map((t, i) => {
+      let cls = '';
+      if(t.team === SVB) cls = ' class="highlight"';
+      else if(opponent && t.team === opponent) cls = ' class="highlight-opponent"';
+      return `<tr${cls}><td>${i + 1}</td><td>${t.team}</td><td>${t.played}</td><td>${t.points}</td></tr>`;
+    }).join('');
+  }
+
+  /* Season stats: ALL scorers/assist-providers/MOTM picks are recorded here
+     in full (so nothing is lost as the season goes on) and ALL of them are
+     rendered - the lists just have a limited height (~3 rows) with scrolling,
+     so normally only the top 3 are visible but the rest is one scroll away
+     instead of being hidden/discarded entirely. Ties share a rank (e.g. two
+     players level on 2 goals both show as "1.", the next player is then "3." -
+     standard sports-ranking style); on a tie, alphabetical order (by surname
+     as stored in SQUAD) decides who's listed first. To add a new goal/
+     assist/MOTM: find the player's "num" in the matching list below and
+     increase their count by 1 (or add a new { num:'..', count:1 } entry if
+     they're not in
+     the list yet). */
+  const STATS = {
+    motm: [
+      { num:'18', count:1 }
+    ],
+    scorers: [
+      { num:'18', count:2 },
+      { num:'25', count:1 },
+      { num:'2',  count:1 }
+    ],
+    assists: [
+      { num:'11', count:1 },
+      { num:'21', count:1 }
+    ]
+  };
+
+  function topRanked(list){
+    const sorted = [...list].sort((a, b) => {
+      if(b.count !== a.count) return b.count - a.count;
+      const nameA = (playerByNum(a.num) || {}).name || a.num;
+      const nameB = (playerByNum(b.num) || {}).name || b.num;
+      return nameA.localeCompare(nameB, 'de');
+    });
+    let rank = 0, lastCount = null;
+    return sorted.map((entry, i) => {
+      if(entry.count !== lastCount){ rank = i + 1; lastCount = entry.count; }
+      return { ...entry, rank };
+    });
+  }
+
+  function renderStatList(id, list){
+    const ol = document.getElementById(id);
+    if(!ol) return;
+    ol.innerHTML = topRanked(list).map(entry => {
+      const p = playerByNum(entry.num);
+      const name = p ? p.name : entry.num;
+      return `<li data-num="${entry.num}"><span class="stat-rank">${entry.rank}.</span><span class="stat-name">${name}</span><span class="stat-value">${entry.count}</span></li>`;
+    }).join('');
+  }
+
+  function renderStats(){
+    renderStatList('statMotm', STATS.motm);
+    renderStatList('statScorers', STATS.scorers);
+    renderStatList('statAssists', STATS.assists);
+  }
+
   renderBoard();
   renderSquadList();
+  renderLeagueTable();
+  renderStats();
 
 (function(){
   const intro = document.getElementById('intro');
@@ -1510,26 +1581,25 @@
   let finished = false;
   let modernMode = false;
 
-  /* Einzige Quelle der Wahrheit fuer alle Timings. Die beiden Werte, die
-     auch in CSS-Animationsdauern gebraucht werden (irisDuration,
-     flashDuration), werden unten als Custom Properties gesetzt - so
-     koennen JS und CSS nie auseinanderdriften. */
+  /* Single source of truth for all timings. The two values also needed
+     in CSS animation durations (irisDuration, flashDuration) are set
+     below as custom properties - this way JS and CSS can never drift apart. */
   const TIMING = {
-    introDuration: 9450, // ms bis zum Uebergang zur Hauptseite
+    introDuration: 9450, // ms until transition to the main page
     cutToCard2:    2700, // Nowawes/1751 -> Sport-Club Jugendkraft 1903
     cutToCard3:    5400, // -> Sportverein Babelsberg 03 e. V.
-    card3Hide:     8100, // Titelkarte weg, Flash-Sequenz beginnt
-    nullHide:      8550, // NULL wieder weg
-    dreiShow:      8650, // DREI erscheint unten
-    dreiHide:      9250, // DREI wieder weg
-    irisDuration:  9800, // CSS-Animationsdauer der Iris-Blende
-    flashDuration:  420  // CSS-Animationsdauer von flashPunch
+    card3Hide:     8100, // title card gone, flash sequence begins
+    nullHide:      8550, // NULL gone again
+    dreiShow:      8650, // DREI appears at the bottom
+    dreiHide:      9250, // DREI gone again
+    irisDuration:  9800, // CSS animation duration of the iris wipe
+    flashDuration:  420  // CSS animation duration of flashPunch
   };
   document.documentElement.style.setProperty('--iris-duration', TIMING.irisDuration + 'ms');
   document.documentElement.style.setProperty('--flash-duration', TIMING.flashDuration + 'ms');
 
-  /* ---- Kratzer: fester Pool wiederverwendeter <line>-Elemente statt
-     staendigem Erzeugen/Entfernen von SVG-Knoten (analog zu Staub/Fussel) ---- */
+  /* ---- Scratches: fixed pool of reused <line> elements instead of
+     constantly creating/removing SVG nodes (same approach as dust/hair) ---- */
   const SCRATCH_POOL_SIZE = 4;
   const scratchPool = [];
   const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -1548,7 +1618,7 @@
     line.setAttribute('stroke-width', strokeWidth.toFixed(2));
     line.style.setProperty('--s-op', op.toFixed(2));
     line.classList.remove('flash');
-    void line.getBoundingClientRect(); // Reflow erzwingen, damit die Animation neu startet
+    void line.getBoundingClientRect(); // force reflow so the animation restarts
     line.classList.add('flash');
   }
   function spawnScratch(){
@@ -1562,19 +1632,19 @@
   }
   let scratchInterval = setInterval(spawnScratch, 140);
 
-  /* ---- Kurzer, gezielter Blitzlicht-Impuls (Filmklebestelle / Schnitt).
-     Läuft als eigene kurze CSS-Animation, per Klassen-Toggle ausgelöst -
-     kein Dauerlauf im JS. ---- */
+  /* ---- Short, targeted flash-light pulse (film splice / cut).
+     Runs as its own short CSS animation, triggered via class toggle -
+     no continuous loop in JS. ---- */
   function boostFlicker(){
     flicker.classList.remove('boost');
-    void flicker.offsetWidth; // Reflow erzwingen, damit die Animation neu startet
+    void flicker.offsetWidth; // force reflow so the animation restarts
     flicker.classList.add('boost');
-    // boost-Klasse danach wieder entfernen, sonst bleibt sie fuer immer gesetzt
-    // und ueberdeckt per hoeherer Spezifitaet dauerhaft das Grund-Flackern.
+    // remove the boost class again afterward, otherwise it stays set forever
+    // and permanently overrides the base flicker via higher specificity.
     setTimeout(()=>{ flicker.classList.remove('boost'); }, 170);
   }
 
-  /* ---- Gelegentlicher Licht-Leck-Schimmer ---- */
+  /* ---- Occasional light-leak shimmer ---- */
   function lightLeakPulse(){
     if(finished) return;
     lightleak.style.opacity = (Math.random()*0.5).toFixed(2);
@@ -1582,8 +1652,8 @@
   }
   lightLeakPulse();
 
-  /* ---- Staub-Partikel: fester Pool wiederverwendeter Elemente statt
-     staendigem Erzeugen/Entfernen von DOM-Knoten (spart Reflow/GC-Druck) ---- */
+  /* ---- Dust particles: fixed pool of reused elements instead of
+     constantly creating/removing DOM nodes (saves reflow/GC pressure) ---- */
   const DUST_POOL_SIZE = 14;
   const dustPool = [];
   for(let i=0;i<DUST_POOL_SIZE;i++){
@@ -1601,12 +1671,12 @@
     d.style.top = (Math.random()*100)+'%';
     d.style.setProperty('--d-op', (Math.random()*0.7+0.2).toFixed(2));
     d.classList.remove('active');
-    void d.offsetWidth; // Reflow erzwingen, damit die Animation neu startet
+    void d.offsetWidth; // force reflow so the animation restarts
     d.classList.add('active');
   }
   let dustInterval = setInterval(spawnDust, 80);
 
-  /* ---- Vereinzelte kurze "Haare"/Fussel im Bildkader - ebenfalls als Pool ---- */
+  /* ---- Occasional short "hairs"/lint in the frame - also pooled ---- */
   const HAIR_POOL_SIZE = 5;
   const hairPool = [];
   for(let i=0;i<HAIR_POOL_SIZE;i++){
@@ -1631,8 +1701,8 @@
   }
   let hairInterval = setInterval(spawnHair, 700);
 
-  /* ---- Harter Schnitt: Nowawes/1751 -> Sport-Club Jugendkraft 1903,
-     mit kurzem Aufflackern wie an einer echten Filmklebestelle ---- */
+  /* ---- Hard cut: Nowawes/1751 -> Sport-Club Jugendkraft 1903,
+     with a brief flicker like at a real film splice ---- */
   function spliceCut(){
     boostFlicker();
     scratchPool.forEach(line=>{
@@ -1645,19 +1715,19 @@
     spliceCut();
   }, TIMING.cutToCard2);
 
-  /* ---- Harter Schnitt: -> Sportverein Babelsberg 03 e. V. ---- */
+  /* ---- Hard cut: -> Sportverein Babelsberg 03 e. V. ---- */
   setTimeout(()=>{
     card2.classList.remove('visible');
     card3.classList.add('visible');
     spliceCut();
   }, TIMING.cutToCard3);
 
-  /* ---- Zigarettenbrand-Marker (Reel-Change-Cue) kurz vor der Flash-Sequenz ---- */
+  /* ---- Cigarette burn marker (reel-change cue) shortly before the flash sequence ---- */
   setTimeout(()=>{ burnmark.classList.add('active'); }, TIMING.card3Hide - 900);
   setTimeout(()=>{ burnmark.classList.remove('active'); }, TIMING.card3Hide - 650);
 
-  /* ---- Schnelle, grelle Flash-Sequenz: NULL (oben) -> weg -> DREI (unten)
-     Genau hier kippt die Bühne von Stummfilm-Optik zu modernem Flächen-Blau ---- */
+  /* ---- Fast, glaring flash sequence: NULL (top) -> gone -> DREI (bottom)
+     This is exactly where the stage tips from silent-film look to modern flat blue ---- */
   setTimeout(()=>{
     card3.classList.remove('visible');
     intro.classList.add('modern');
@@ -1677,7 +1747,7 @@
   setTimeout(()=>{
     flashDrei.classList.remove('cut');
     flashDrei.classList.add('show');
-    intro.classList.add('invert'); // Hintergrund wird weiß, DREI-Text ist blau
+    intro.classList.add('invert'); // background turns white, DREI text is blue
   }, TIMING.dreiShow);
 
   setTimeout(()=>{
@@ -1685,10 +1755,10 @@
     flashDrei.classList.add('cut');
   }, TIMING.dreiHide);
 
-  /* ---- Übergang zur (leeren) Hauptseite ----
-     Im 1911er-Teil hat sich die Iris bereits zu Schwarz geschlossen, ein
-     harter Schnitt reicht. Im modernen Blau-Teil (nach NULL/DREI) passt
-     stattdessen ein sauberes Ausblenden besser zum flachen, modernen Look. */
+  /* ---- Transition to the (empty) main page ----
+     In the 1911 part, the iris has already closed to black, so a hard
+     cut is enough. In the modern blue part (after NULL/DREI), a clean
+     fade-out instead fits the flat, modern look better. */
   function finishIntro(){
     if(finished) return;
     finished = true;
@@ -1708,8 +1778,8 @@
 
   setTimeout(finishIntro, TIMING.introDuration);
 
-  /* ---- Geheimer Skip: Taste "s" ueberspringt das Intro sofort ----
-     Bewusst ohne sichtbaren Button oder Hinweis. ---- */
+  /* ---- Secret skip: pressing "s" skips the intro immediately ----
+     Deliberately without a visible button or hint. ---- */
   document.addEventListener('keydown', function(e){
     if(!finished && (e.key === 's' || e.key === 'S')){
       finishIntro();
@@ -1717,12 +1787,12 @@
   });
 })();
 
-/* ---- Countdown auf der Hauptseite ----
-   Ziel wird automatisch aus FIXTURES abgeleitet: der erste Eintrag ohne
-   "score" gilt als naechstes Spiel. Datum/Uhrzeit UND der Fixture-Text
-   ("X vs. Y") kommen beide aus diesem einen Eintrag - so muss bei einem
-   Spieltag-Wechsel nur noch FIXTURES gepflegt werden, nicht mehr zusaetzlich
-   der Countdown-Code und der HTML-Text separat. ---- */
+/* ---- Countdown on the main page ----
+   Target is derived automatically from FIXTURES: the first entry without
+   a "score" counts as the next match. Both the date/time AND the fixture
+   text ("X vs. Y") come from that single entry - so when the matchday
+   changes, only FIXTURES needs to be maintained, not the countdown code
+   and the HTML text separately as well. ---- */
 (function(){
   const els = {
     days:  document.getElementById('cd-days'),
@@ -1734,27 +1804,13 @@
   const nextMatch = FIXTURES.find(f => !f.score);
   if(!nextMatch) return;
 
-  /* Tabellen-Markierung (eigene Zeile blau, naechster Gegner rot) ebenfalls
-     aus nextMatch ableiten statt im HTML hart zu verdrahten - sonst genau
-     die gleiche Sync-Falle wie vorher beim Countdown-Datum. Exakter
-     Vergleich reicht, da Tabellennamen keine Klammerzusaetze mehr tragen. */
-  const opponent = nextMatch.home === SVB ? nextMatch.away : nextMatch.home;
-  document.querySelectorAll('.league-table tbody tr').forEach(row => {
-    row.classList.remove('highlight', 'highlight-opponent');
-    const teamCell = row.children[1];
-    if(!teamCell) return;
-    const teamText = teamCell.textContent.trim();
-    if(teamText === SVB) row.classList.add('highlight');
-    else if(teamText === opponent) row.classList.add('highlight-opponent');
-  });
-
   if(fixtureEl){
     fixtureEl.innerHTML = `${nextMatch.home} <span class="vs">vs.</span> ${nextMatch.away}`;
   }
   if(!els.days) return;
 
   function parseFixtureDateTime(f){
-    // f.date z.B. "Di 11.08." (Wochentag optional), f.month z.B. "August 2026"
+    // f.date e.g. "Di 11.08." (weekday optional), f.month e.g. "August 2026"
     const m = f.date.match(/(\d{2})\.(\d{2})\./);
     if(!m) return null;
     const day = parseInt(m[1], 10);
@@ -1782,14 +1838,14 @@
   setInterval(tick, 1000);
 })();
 
-/* ---- Taktiktafel: Hover auf einen Magneten hebt Name in Kaderliste
-   und (falls vorhanden) in den Statistiken hervor. ---- */
+/* ---- Tactics board: hovering a magnet highlights the name in the squad list
+   and (if present) in the stats. ---- */
 (function(){
   const markers = document.querySelectorAll('.player-marker');
   if(!markers.length) return;
 
-  /* Ziel-Elemente einmalig pro Nummer sammeln, statt bei jedem einzelnen
-     Hover-Event erneut mit einem Attribut-Selektor durch den DOM zu suchen. */
+  /* Collect target elements once per number, instead of searching the DOM
+     again with an attribute selector on every single hover event. */
   const targets = new Map();
   document.querySelectorAll('.squad-list li[data-num], .stat-block li[data-num]').forEach(el => {
     const num = el.getAttribute('data-num');
@@ -1806,9 +1862,9 @@
 </script>
 
 <script>
-/* ---------- POSTER-ZOOM (Spielplan / Spielberichte) ----------
-   Nutzt SVB und FIXTURES, die oben im ersten <script>-Block zentral
-   definiert sind (als top-level const im gleichen Dokument-Scope sichtbar). */
+/* ---------- POSTER ZOOM (fixtures / match reports) ----------
+   Uses SVB and FIXTURES, which are defined centrally above in the first
+   <script> block (visible as top-level const in the same document scope). */
 (function(){
   const modal = document.getElementById('posterModal');
   const backdrop = document.getElementById('posterModalBackdrop');
@@ -1862,37 +1918,37 @@
     `
   };
 
-  /* Spielberichte: eine "Seite" pro bereits gespieltem Spiel, aus den gleichen
-     Spieltag-Daten wie der Spielplan (alle Eintraege mit Ergebnis), chronologisch
-     sortiert - Seite 1 ist damit automatisch das erste Saisonspiel (Chemie Leipzig).
-     Statt eines eigenen Berichtstexts gibt es hier nur den Link zum jeweiligen
-     Kicker-Spielbericht, plus ein Suchfeld, um direkt zu einem bestimmten Gegner
-     zu springen. */
+  /* Match reports: one "page" per match already played, from the same
+     matchday data as the fixture list (all entries with a result), sorted
+     chronologically - page 1 is therefore automatically the first match of
+     the season (Chemie Leipzig). Instead of an own report text, this only
+     has the link to the respective kicker report, plus a search field to
+     jump straight to a specific opponent. */
   const REPORTS = FIXTURES.filter(f => f.score);
   let reportIndex = 0;
 
   /* ================================================================
-     EIGENE SPIELBERICHTE - HIER SCHREIBEN
+     OWN MATCH REPORTS - WRITE HERE
      ================================================================
-     Fuer jedes gespielte Spiel steht unten ein Eintrag bereit (Schluessel
-     = die "id" aus dem FIXTURES-Eintrag oben, z.B. 'jena-heim').
-     Einfach zwischen die Backticks `` ` ... ` `` schreiben - normaler Text
-     reicht, einfache HTML-Tags wie <p>, <b>, <br> funktionieren auch.
-     Bleibt ein Eintrag leer, zeigt die Seite automatisch einen Platzhalter
-     mit Hinweis, dass hier noch Text fehlt.
+     For every match already played, there's an entry ready below (key
+     = the "id" from the FIXTURES entry above, e.g. 'jena-home').
+     Just write between the backticks `` ` ... ` `` - plain text is fine,
+     simple HTML tags like <p>, <b>, <br> also work.
+     If an entry is left empty, the page automatically shows a placeholder
+     noting that text is still missing.
 
-     WICHTIG - ID-Konvention wegen Hin-/Rueckspiel: jeder Gegner kommt in
-     FIXTURES zweimal vor (einmal Heim-, einmal Auswaertsspiel). Damit die
-     "id" nicht kollidiert, immer den Suffix "-heim" bzw. "-auswaerts"
-     anhaengen, je nachdem ob SVB in diesem Eintrag "home" oder "away" ist,
-     z.B. 'jena-heim' fuers Hinspiel und spaeter 'jena-auswaerts' fuers
-     Rueckspiel. Fuer neue Spiele: sobald ein FIXTURES-Eintrag so eine "id"
-     bekommt, hier einfach eine weitere Zeile nach dem gleichen Muster
-     ergaenzen. */
+     IMPORTANT - id convention because of home/away legs: every opponent
+     appears twice in FIXTURES (once as a home match, once as an away
+     match). So the "id" doesn't collide, always append the suffix
+     "-home" or "-away", depending on whether SVB is
+     "home" or "away" in that entry, e.g. 'jena-home' for the first leg and
+     later 'jena-away' for the return leg. For new matches: as soon as
+     a FIXTURES entry gets such an "id", just add another line here
+     following the same pattern. */
   const OWN_REPORTS = {
-    'chemie-leipzig-auswaerts': ``,   // <- Bericht zu BSG Chemie Leipzig 0:2 SV Babelsberg 03 (26.07.)
-    'jena-heim':                ``,   // <- Bericht zu SV Babelsberg 03 0:1 Carl Zeiss Jena (31.07.)
-    'altglienicke-heim':        ``    // <- Bericht zu SV Babelsberg 03 2:2 VSG Altglienicke (04.08.)
+    'chemie-leipzig-away': ``,   // <- Report for BSG Chemie Leipzig 0:2 SV Babelsberg 03 (26.07.)
+    'jena-home':                ``,   // <- Report for SV Babelsberg 03 0:1 Carl Zeiss Jena (31.07.)
+    'altglienicke-home':        ``    // <- Report for SV Babelsberg 03 2:2 VSG Altglienicke (04.08.)
   };
 
   function renderReport(searchError){
@@ -1905,8 +1961,8 @@
       <p class="report-meta">${f.date} ${year} &middot; Regionalliga Nordost</p>
       <div class="report-body report-links">
         ${f.kicker ? `<a class="report-link-btn report-link-kicker" href="${f.kicker}" target="_blank" rel="noopener">Bericht auf kicker.de &rsaquo;</a>` : ''}
-        ${f.verein ? `<a class="report-link-btn report-link-verein" href="${f.verein}" target="_blank" rel="noopener">Bericht auf babelsberg03.de &rsaquo;</a>` : ''}
-        ${(!f.kicker && !f.verein) ? `<p>Für dieses Spiel gibt es noch keinen verlinkten Spielbericht.</p>` : ''}
+        ${f.babelsberg03 ? `<a class="report-link-btn report-link-verein" href="${f.babelsberg03}" target="_blank" rel="noopener">Bericht auf babelsberg03.de &rsaquo;</a>` : ''}
+        ${(!f.kicker && !f.babelsberg03) ? `<p>Für dieses Spiel gibt es noch keinen verlinkten Spielbericht.</p>` : ''}
       </div>
       <div class="report-own">
         <p class="report-own-label">Eigener Bericht</p>
@@ -1965,10 +2021,10 @@
     currentPosterType = null;
   }
 
-  /* Scroll (Mausrad/Trackpad) und Touch-Swipe zum Vor-/Zurueckblaettern
-     zwischen den Spielberichten - zusaetzlich zu den Pfeil-Buttons. Ein
-     Cooldown verhindert, dass ein einzelnes Trackpad-Scrollgesten-"Rauschen"
-     gleich mehrere Seiten ueberspringt. */
+  /* Scroll (mouse wheel/trackpad) and touch swipe for paging back/forth
+     through the match reports - in addition to the arrow buttons. A
+     cooldown prevents a single trackpad scroll-gesture's "noise" from
+     skipping several pages at once. */
   let wheelCooldown = false;
   function goReport(direction){
     if(direction > 0 && reportIndex < REPORTS.length - 1){ reportIndex++; renderReport(); }
@@ -1976,9 +2032,9 @@
   }
   content.addEventListener('wheel', e => {
     if(currentPosterType !== 'spielberichte' || wheelCooldown) return;
-    // Wenn das Panel selbst scrollen muss (z.B. sehr niedriges Browserfenster),
-    // normales Scrollen zulassen statt jede Bewegung als Seitenwechsel zu
-    // interpretieren - sonst kommt man an den unteren Teil des Inhalts nicht mehr ran.
+    // If the panel itself needs to scroll (e.g. a very short browser window),
+    // allow normal scrolling instead of interpreting every movement as a page change
+    // otherwise you can no longer reach the lower part of the content.
     if(panel && panel.scrollHeight > panel.clientHeight) return;
     const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
     if(Math.abs(delta) < 25) return;
@@ -2006,9 +2062,9 @@
   document.addEventListener('keydown', e => {
     if(e.key === 'Escape'){ closePoster(); return; }
     if(!currentPosterType) return;
-    // Wenn gerade ein Eingabefeld (z.B. das Gegner-Suchfeld) den Fokus hat,
-    // sollen Pfeiltasten normal den Cursor bewegen statt Seiten zu blaettern
-    // oder das Panel zu scrollen.
+    // If an input field (e.g. the opponent search field) currently has focus,
+    // arrow keys should move the cursor normally instead of paging through reports
+    // or scrolling the panel.
     const tag = document.activeElement && document.activeElement.tagName;
     if(tag === 'INPUT' || tag === 'TEXTAREA') return;
     if(currentPosterType === 'spielplan' && (e.key === 'ArrowUp' || e.key === 'ArrowDown')){
