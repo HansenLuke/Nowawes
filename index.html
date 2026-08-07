@@ -624,33 +624,11 @@
     color:#f4f1ea;
     padding:40px 24px;
   }
-  #page .model-section .eyebrow{
-    font-family:'Oswald', sans-serif;
-    letter-spacing:3px;
-    text-transform:uppercase;
-    font-size:12.5px;
-    line-height:1;
-    color:var(--gold);
-    margin:0 0 0;
-    padding-top:2px;
-    text-align:center;
-  }
-  #page .model-col{ text-align:center; }
 
   /* Eingang zentriert, ca. 2/3 der Panel-Breite */
   #page .model-inner-full{ max-width:1320px; margin:0 auto; text-align:center; }
   #page .entrance-wrap{ position:relative; width:110vw; left:50%; transform:translateX(-50%); }
   #page .stand-graphic-full{ width:100%; display:block; }
-  #page .model-graphic{ width:100%; max-width:300px; display:block; margin:0 auto; }
-  #page .stand-graphic{ width:100%; max-width:300px; display:block; margin:0 auto 18px; }
-  #page .model-caption{
-    font-family:'Oswald', sans-serif;
-    font-size:10.5px;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    color:#8a97b5;
-    margin:6px 0 20px;
-  }
 
   #page .site-footer{
     background:var(--navy-deep);
@@ -838,12 +816,12 @@
     margin-top:20px; padding-top:14px; border-top:1px solid rgba(19,41,75,.12);
   }
   #page .report-nav-btn{
-    font-family:'Oswald', sans-serif; font-size:13px; letter-spacing:0.5px;
-    background:var(--club-blue); color:#fff; border:none; border-radius:4px;
-    padding:8px 14px; cursor:pointer;
+    font-family:'Oswald', sans-serif; font-size:22px; line-height:1;
+    background:none; color:var(--ink); border:none;
+    width:34px; height:34px; padding:0; cursor:pointer;
   }
   #page .report-nav-btn:disabled{
-    background:#c7cad1; cursor:default;
+    color:#c7cad1; cursor:default;
   }
   #page .report-counter{
     font-family:'Oswald', sans-serif; font-size:12.5px; color:#6b7280; letter-spacing:0.5px;
@@ -934,21 +912,21 @@
             <tr><td>1</td><td>Chemnitzer FC</td><td>3</td><td>9</td></tr>
             <tr><td>2</td><td>Rot-Weiß Erfurt</td><td>3</td><td>7</td></tr>
             <tr><td>3</td><td>Greifswalder FC</td><td>3</td><td>7</td></tr>
-            <tr><td>4</td><td>1. FC Lok Leipzig</td><td>3</td><td>7</td></tr>
-            <tr><td>5</td><td>Carl Zeiss Jena</td><td>3</td><td>6</td></tr>
-            <tr><td>6</td><td>Hallescher FC</td><td>3</td><td>5</td></tr>
-            <tr class="highlight-opponent"><td>7</td><td>1. FC Magdeburg II</td><td>3</td><td>4</td></tr>
-            <tr><td>8</td><td>Erzgebirge Aue (A)</td><td>2</td><td>4</td></tr>
+            <tr><td>4</td><td>Erzgebirge Aue</td><td>3</td><td>7</td></tr>
+            <tr><td>5</td><td>1. FC Lok Leipzig</td><td>3</td><td>7</td></tr>
+            <tr><td>6</td><td>Carl Zeiss Jena</td><td>3</td><td>6</td></tr>
+            <tr><td>7</td><td>Hallescher FC</td><td>3</td><td>5</td></tr>
+            <tr class="highlight-opponent"><td>8</td><td>1. FC Magdeburg II</td><td>3</td><td>4</td></tr>
             <tr class="highlight"><td>9</td><td>SV Babelsberg 03</td><td>3</td><td>4</td></tr>
-            <tr><td>10</td><td>RSV Eintracht (N)</td><td>3</td><td>4</td></tr>
-            <tr><td>11</td><td>BFC Dynamo</td><td>2</td><td>3</td></tr>
+            <tr><td>10</td><td>RSV Eintracht</td><td>3</td><td>4</td></tr>
+            <tr><td>11</td><td>BFC Dynamo</td><td>3</td><td>3</td></tr>
             <tr><td>12</td><td>FSV Zwickau</td><td>3</td><td>3</td></tr>
             <tr><td>13</td><td>FSV Luckenwalde</td><td>3</td><td>3</td></tr>
             <tr><td>14</td><td>VSG Altglienicke</td><td>2</td><td>2</td></tr>
             <tr><td>15</td><td>BFC Preussen</td><td>3</td><td>1</td></tr>
             <tr><td>16</td><td>BSG Chemie Leipzig</td><td>3</td><td>0</td></tr>
             <tr><td>17</td><td>Hertha BSC II</td><td>2</td><td>0</td></tr>
-            <tr><td>18</td><td>Tasmania Berlin (N)</td><td>3</td><td>0</td></tr>
+            <tr><td>18</td><td>Tasmania Berlin</td><td>3</td><td>0</td></tr>
           </tbody>
         </table>
         </div>
@@ -1058,7 +1036,7 @@
         </div>
         <div class="lineup-graphic">
           <p class="eyebrow">Aufstellung</p>
-          <svg class="pitch-graphic" viewBox="0 0 340 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aufstellung auf einer Taktiktafel in einer 4-3-3-Formation, mit Einwechslungen der letzten Partie">
+          <svg class="pitch-graphic" viewBox="0 0 340 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aufstellung auf einer Taktiktafel in einer 4-3-3-Formation">
             <defs>
               <pattern id="grass" patternUnits="userSpaceOnUse" x="24" y="24" width="292" height="34">
                 <rect width="292" height="17" fill="#4a8a3d"/>
@@ -1088,57 +1066,11 @@
             <rect x="110" y="395.9" width="120" height="94.1" fill="none" stroke="#f4f1ea" stroke-width="2"/>
             <rect x="140" y="453.4" width="60" height="36.6" fill="none" stroke="#f4f1ea" stroke-width="2"/>
 
-            <!-- Ersatzmarker: kleben auf dem schmalen Metallrand und sind
-                 genauso interaktiv wie die Feldspieler (Hover zeigt Namen,
-                 hebt Kaderliste/Statistik hervor). Label liegt rechts vom
-                 Marker, da links kein Platz mehr auf dem Rahmen ist.
-                 Zeigt die nicht eingesetzten/nicht eingewechselten Spieler
-                 der letzten Partie (4-3-3, siehe unten). -->
-            <g class="player-marker" data-num="19">
-              <circle cx="13" cy="30" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="33.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">19</text>
-              <g class="player-name-label"><rect x="26" y="22" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="33.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Müller Niclas</text></g>
-            </g>
-            <g class="player-marker" data-num="5">
-              <circle cx="13" cy="87.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="90.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">5</text>
-              <g class="player-name-label"><rect x="26" y="79.5" width="120" height="16" rx="3" fill="#0c1c33"/><text x="32" y="90.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Weyh Kenny</text></g>
-            </g>
-            <g class="player-marker" data-num="28">
-              <circle cx="13" cy="145" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="148.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">28</text>
-              <g class="player-name-label"><rect x="26" y="137" width="150" height="16" rx="3" fill="#0c1c33"/><text x="32" y="148.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">von Piechowski Laurin</text></g>
-            </g>
-            <g class="player-marker" data-num="33">
-              <circle cx="13" cy="202.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="205.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">33</text>
-              <g class="player-name-label"><rect x="26" y="194.5" width="140" height="16" rx="3" fill="#0c1c33"/><text x="32" y="205.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Berger Tom-Kaspar</text></g>
-            </g>
-            <g class="player-marker" data-num="7">
-              <circle cx="13" cy="260" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="263.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">7</text>
-              <g class="player-name-label"><rect x="26" y="252" width="140" height="16" rx="3" fill="#0c1c33"/><text x="32" y="263.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Werbelow Samir</text></g>
-            </g>
-            <g class="player-marker" data-num="11">
-              <circle cx="13" cy="317.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="320.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">11</text>
-              <g class="player-name-label"><rect x="26" y="309.5" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="320.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Schmidt Tino</text></g>
-            </g>
-            <g class="player-marker" data-num="22">
-              <circle cx="13" cy="375" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="378.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">22</text>
-              <g class="player-name-label"><rect x="26" y="367" width="120" height="16" rx="3" fill="#0c1c33"/><text x="32" y="378.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Lehmann Felix</text></g>
-            </g>
-            <g class="player-marker" data-num="23">
-              <circle cx="13" cy="432.5" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="435.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">23</text>
-              <g class="player-name-label"><rect x="26" y="424.5" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="435.7" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Malzahn Mika</text></g>
-            </g>
-            <g class="player-marker" data-num="29">
-              <circle cx="13" cy="490" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
-              <text x="13" y="493.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">29</text>
-              <g class="player-name-label"><rect x="26" y="482" width="130" height="16" rx="3" fill="#0c1c33"/><text x="32" y="493.2" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">Gollnack Simon</text></g>
-            </g>
+            <!-- Ersatzmarker (Bank) + Startelf-Marker: werden per JS aus den
+                 zentralen SQUAD/BOARD-Datenobjekten generiert (siehe Script
+                 am Seitenende), damit Name/Nummer nicht mehr getrennt in
+                 Kaderliste UND Taktiktafel gepflegt werden muessen. -->
+            <g id="benchMarkers"></g>
 
             <!-- Schemenhafte Marker-Skizze: Kang zieht auf den linken Fluegel,
                  von dort kommt die Flanke/der Pass zum langen Pfosten, wo
@@ -1158,64 +1090,7 @@
               <path d="M205,48 L188,38" stroke-width="2.3" marker-end="url(#sketchArrow)"/>
             </g>
 
-            <!-- Spieler-Marker (Startformation 4-3-3 der letzten Partie).
-                 Jede Gruppe ist per Hover interaktiv - zeigt den Namen und
-                 hebt Kaderliste/Statistik hervor. -->
-            <g class="player-marker" data-num="1">
-              <circle cx="170.0" cy="453.4" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="170.0" y="457.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">1</text>
-              <g class="player-name-label"><rect x="100" y="418.4" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="429.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Babke Maximus</text></g>
-            </g>
-            <g class="player-marker" data-num="3">
-              <circle cx="75.0" cy="375.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="75.0" y="379.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">3</text>
-              <g class="player-name-label"><rect x="5" y="340.0" width="140" height="16" rx="3" fill="#0c1c33"/><text x="75" y="351.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Lang Jannis</text></g>
-            </g>
-            <g class="player-marker" data-num="8">
-              <circle cx="105.0" cy="280.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="105.0" y="285.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">8</text>
-              <g class="player-name-label"><rect x="35" y="245.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="105" y="256.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Lämmel Lukas</text></g>
-            </g>
-            <g class="player-marker" data-num="20">
-              <circle cx="202.0" cy="380.2" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="202.0" y="384.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">20</text>
-              <g class="player-name-label"><rect x="132" y="345.2" width="140" height="16" rx="3" fill="#0c1c33"/><text x="202" y="356.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Hasse Tobias</text></g>
-            </g>
-            <g class="player-marker" data-num="27">
-              <circle cx="265.0" cy="375.0" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="265.0" y="379.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">27</text>
-              <g class="player-name-label"><rect x="195" y="340.0" width="140" height="16" rx="3" fill="#0c1c33"/><text x="265" y="351.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Büch Gordon</text></g>
-            </g>
-            <g class="player-marker" data-num="2">
-              <circle cx="138.0" cy="380.2" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="138.0" y="384.7" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">2</text>
-              <g class="player-name-label"><rect x="63" y="345.2" width="150" height="16" rx="3" fill="#0c1c33"/><text x="138" y="356.2" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">Kalckreuth Maximilian</text></g>
-            </g>
-            <g class="player-marker" data-num="6">
-              <circle cx="170.0" cy="286.1" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="170.0" y="290.6" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">6</text>
-              <g class="player-name-label"><rect x="100" y="251.1" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="262.1" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Wegener Paul</text></g>
-            </g>
-            <g class="player-marker" data-num="18">
-              <circle cx="235.0" cy="280.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="235.0" y="285.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">18</text>
-              <g class="player-name-label"><rect x="165" y="245.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="235" y="256.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Ebel Amadeus</text></g>
-            </g>
-            <g class="player-marker" data-num="9">
-              <circle cx="95.0" cy="165.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="95.0" y="170.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">9</text>
-              <g class="player-name-label"><rect x="15" y="130.9" width="160" height="16" rx="3" fill="#0c1c33"/><text x="95" y="141.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Okpalaike Joshua</text></g>
-            </g>
-            <g class="player-marker" data-num="21">
-              <circle cx="170.0" cy="155.5" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="170.0" y="160.0" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">21</text>
-              <g class="player-name-label"><rect x="100" y="120.5" width="140" height="16" rx="3" fill="#0c1c33"/><text x="170" y="131.5" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Kang Min-Gi</text></g>
-            </g>
-            <g class="player-marker" data-num="25">
-              <circle cx="245.0" cy="165.9" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
-              <text x="245.0" y="170.4" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">25</text>
-              <g class="player-name-label"><rect x="175" y="130.9" width="140" height="16" rx="3" fill="#0c1c33"/><text x="245" y="141.9" text-anchor="middle" font-family="Oswald, sans-serif" font-size="10" fill="#f4f1ea">Ogbidi Theo</text></g>
-            </g>
+            <g id="startMarkers"></g>
 
             <!-- Stifthalterung + Schwamm, wie an einer echten Taktiktafel -->
             <!-- Ablage als klare Stufe: helle Flaeche oben, dunklere Vorderkante
@@ -1257,32 +1132,6 @@
           <p class="eyebrow">Kader</p>
           <div class="squad-scroll">
           <ul class="squad-list">
-            <li data-num="1"><span class="num">1</span><span class="name">Babke Maximus</span><span class="pos">TW</span></li>
-            <li data-num="19"><span class="num">19</span><span class="name">Müller Niclas</span><span class="pos">TW</span></li>
-            <li data-num="3"><span class="num">3</span><span class="name">Lang Jannis</span><span class="pos">ABW</span></li>
-            <li data-num="5"><span class="num">5</span><span class="name">Weyh Kenny</span><span class="pos">ABW</span></li>
-            <li data-num="8"><span class="num">8</span><span class="name">Lämmel Lukas</span><span class="pos">ABW</span></li>
-            <li data-num="20"><span class="num">20</span><span class="name">Hasse Tobias</span><span class="pos">ABW</span></li>
-            <li data-num="27"><span class="num">27</span><span class="name">Büch Gordon</span><span class="pos">ABW</span></li>
-            <li data-num="28"><span class="num">28</span><span class="name">von Piechowski Laurin</span><span class="pos">ABW</span></li>
-            <li data-num="2"><span class="num">2</span><span class="name">Kalckreuth Maximilian</span><span class="pos">MF</span></li>
-            <li data-num="6"><span class="num">6</span><span class="name">Wegener Paul</span><span class="pos">MF</span></li>
-            <li data-num="10"><span class="num">10</span><span class="name">Meier Matthew</span><span class="pos">MF</span></li>
-            <li data-num="11"><span class="num">11</span><span class="name">Schmidt Tino</span><span class="pos">MF</span></li>
-            <li data-num="14"><span class="num">14</span><span class="name">Perovic Marko</span><span class="pos">MF</span></li>
-            <li data-num="17"><span class="num">17</span><span class="name">Salaske Noah</span><span class="pos">MF</span></li>
-            <li data-num="18"><span class="num">18</span><span class="name">Ebel Amadeus</span><span class="pos">MF</span></li>
-            <li data-num="23"><span class="num">23</span><span class="name">Malzahn Mika</span><span class="pos">MF</span></li>
-            <li data-num="33"><span class="num">33</span><span class="name">Berger Tom-Kaspar</span><span class="pos">MF</span></li>
-            <li data-num="geue-nonum"><span class="num">&ndash;</span><span class="name">Geue Tjalf</span><span class="pos">MF</span></li>
-            <li data-num="7"><span class="num">7</span><span class="name">Werbelow Samir</span><span class="pos">ST</span></li>
-            <li data-num="9"><span class="num">9</span><span class="name">Okpalaike Joshua</span><span class="pos">ST</span></li>
-            <li data-num="21"><span class="num">21</span><span class="name">Kang Min-Gi</span><span class="pos">ST</span></li>
-            <li data-num="22"><span class="num">22</span><span class="name">Lehmann Felix</span><span class="pos">ST</span></li>
-            <li data-num="24"><span class="num">24</span><span class="name">Herrmann Charles-Jesaja</span><span class="pos">ST</span></li>
-            <li data-num="25"><span class="num">25</span><span class="name">Ogbidi Theo</span><span class="pos">ST</span></li>
-            <li data-num="26"><span class="num">26</span><span class="name">Yilmaz Ardahan</span><span class="pos">ST</span></li>
-            <li data-num="29"><span class="num">29</span><span class="name">Gollnack Simon</span><span class="pos">ST</span></li>
           </ul>
           </div>
         </div>
@@ -1486,6 +1335,164 @@
   </div>
 
 <script>
+/* ================================================================
+   ZENTRALE DATEN: FIXTURES (Spielplan/Ergebnisse) und SQUAD (Kader).
+   ================================================================
+   Beides steht hier EINMAL an zentraler Stelle statt an mehreren Stellen
+   im Dokument dupliziert zu werden:
+   - FIXTURES speist Tabelle-Kontext, Countdown, Spielplan-Modal UND
+     Spielberichte-Modal (dort weiter unten im zweiten <script>-Block
+     referenziert - Variablen aus diesem Top-Level-Scope sind fuer alle
+     nachfolgenden <script>-Bloecke der Seite sichtbar).
+   - SQUAD + BOARD speisen sowohl die Kaderliste als auch die Marker auf
+     der Taktiktafel (Bank + Startelf). BOARD haelt nur noch Positionen
+     ("wo auf dem Feld"), SQUAD nur noch Personendaten ("wer") - beim
+     naechsten Formationswechsel muss dadurch nur noch BOARD angepasst
+     werden, nicht mehr 20 einzelne SVG-Marker von Hand. */
+  const SVB = 'SV Babelsberg 03';
+  const FIXTURES = [
+    { month:'Juli 2026', date:'So 26.07.', home:'BSG Chemie Leipzig', away:SVB, score:'0:2', kicker:'https://www.kicker.de/chemie-leipzig-gegen-babelsberg-2026-regionalliga-nordost-5233596/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23568/auswartssieg-in-leutzsch', id:'chemie-leipzig' },
+    { month:'Juli 2026', date:'Fr 31.07.', home:SVB, away:'Carl Zeiss Jena', score:'0:1', kicker:'https://www.kicker.de/babelsberg-gegen-jena-2026-regionalliga-nordost-5233607/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23684/spater-gegentreffer-entscheidet-flutlichtduell-gegen-jena', id:'jena' },
+    { month:'August 2026', date:'Di 04.08.', home:SVB, away:'VSG Altglienicke', score:'2:2', kicker:'https://www.kicker.de/babelsberg-gegen-altglienicke-2026-regionalliga-nordost-5233611/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23746/spater-doppelschlag-verhindert-heimsieg-gegen-altglienicke', id:'altglienicke' },
+    { month:'August 2026', date:'Di 11.08.', home:'1. FC Magdeburg II', away:SVB, time:'19:00' },
+    { month:'August 2026', date:'Fr 14.08.', home:SVB, away:'RSV Eintracht', time:'19:00' },
+    { month:'August 2026', date:'Mi 26.08.', home:'Greifswalder FC', away:SVB, time:'19:00' },
+    { month:'August 2026', date:'Sa 29.08.', home:'FSV Zwickau', away:SVB, time:'16:00' },
+    { month:'September 2026', date:'Sa 12.09.', home:SVB, away:'Hallescher FC', time:'14:00' },
+    { month:'September 2026', date:'Mi 16.09.', home:'Chemnitzer FC', away:SVB, time:'19:00' },
+    { month:'September 2026', date:'Sa 19.09.', home:SVB, away:'Hertha BSC II', time:'14:00' },
+    { month:'September 2026', date:'So 27.09.', home:'FSV Luckenwalde', away:SVB, time:'14:00' },
+    { month:'Oktober 2026', date:'So 11.10.', home:SVB, away:'1. FC Lok Leipzig', time:'14:00' },
+    { month:'Oktober 2026', date:'So 18.10.', home:'Tasmania Berlin', away:SVB, time:'14:00' },
+    { month:'Oktober 2026', date:'So 25.10.', home:SVB, away:'BFC Preussen', time:'14:00' },
+    { month:'November 2026', date:'So 01.11.', home:'Rot-Weiß Erfurt', away:SVB, time:'14:00' },
+    { month:'November 2026', date:'So 08.11.', home:SVB, away:'BFC Dynamo', time:'14:00' },
+    { month:'November 2026', date:'So 22.11.', home:'Erzgebirge Aue', away:SVB, time:'14:00' },
+    { month:'November 2026', date:'So 29.11.', home:SVB, away:'BSG Chemie Leipzig', time:'14:00' },
+    { month:'Dezember 2026', date:'So 06.12.', home:'Carl Zeiss Jena', away:SVB, time:'14:00' },
+    { month:'Dezember 2026', date:'So 13.12.', home:'VSG Altglienicke', away:SVB, time:'14:00' },
+    { month:'Februar 2027', date:'So 14.02.', home:SVB, away:'1. FC Magdeburg II', time:'14:00' },
+    { month:'Februar 2027', date:'So 21.02.', home:'RSV Eintracht', away:SVB, time:'14:00' },
+    { month:'Februar 2027', date:'So 28.02.', home:SVB, away:'Greifswalder FC', time:'14:00' },
+    { month:'März 2027', date:'So 07.03.', home:SVB, away:'FSV Zwickau', time:'14:00' },
+    { month:'März 2027', date:'So 14.03.', home:'Hallescher FC', away:SVB, time:'14:00' },
+    { month:'März 2027', date:'So 21.03.', home:SVB, away:'Chemnitzer FC', time:'14:00' },
+    { month:'April 2027', date:'So 04.04.', home:'Hertha BSC II', away:SVB, time:'14:00' },
+    { month:'April 2027', date:'Mi 07.04.', home:SVB, away:'FSV Luckenwalde', time:'19:00' },
+    { month:'April 2027', date:'So 11.04.', home:'1. FC Lok Leipzig', away:SVB, time:'14:00' },
+    { month:'April 2027', date:'So 18.04.', home:SVB, away:'Tasmania Berlin', time:'14:00' },
+    { month:'April 2027', date:'So 25.04.', home:'BFC Preussen', away:SVB, time:'14:00' },
+    { month:'Mai 2027', date:'So 09.05.', home:SVB, away:'Rot-Weiß Erfurt', time:'14:00' },
+    { month:'Mai 2027', date:'So 16.05.', home:'BFC Dynamo', away:SVB, time:'14:00' },
+    { month:'Mai 2027', date:'So 23.05.', home:SVB, away:'Erzgebirge Aue', time:'14:00' }
+  ];
+
+  const SQUAD = [
+    { num:'1',  name:'Babke Maximus', pos:'TW' },
+    { num:'19', name:'Müller Niclas', pos:'TW' },
+    { num:'3',  name:'Lang Jannis', pos:'ABW' },
+    { num:'5',  name:'Weyh Kenny', pos:'ABW' },
+    { num:'8',  name:'Lämmel Lukas', pos:'ABW' },
+    { num:'20', name:'Hasse Tobias', pos:'ABW' },
+    { num:'27', name:'Büch Gordon', pos:'ABW' },
+    { num:'28', name:'von Piechowski Laurin', pos:'ABW' },
+    { num:'2',  name:'Kalckreuth Maximilian', pos:'MF' },
+    { num:'6',  name:'Wegener Paul', pos:'MF' },
+    { num:'10', name:'Meier Matthew', pos:'MF' },
+    { num:'11', name:'Schmidt Tino', pos:'MF' },
+    { num:'14', name:'Perovic Marko', pos:'MF' },
+    { num:'17', name:'Salaske Noah', pos:'MF' },
+    { num:'18', name:'Ebel Amadeus', pos:'MF' },
+    { num:'23', name:'Malzahn Mika', pos:'MF' },
+    { num:'33', name:'Berger Tom-Kaspar', pos:'MF' },
+    { num:'geue-nonum', name:'Geue Tjalf', pos:'MF', display:'–' },
+    { num:'7',  name:'Werbelow Samir', pos:'ST' },
+    { num:'9',  name:'Okpalaike Joshua', pos:'ST' },
+    { num:'21', name:'Kang Min-Gi', pos:'ST' },
+    { num:'22', name:'Lehmann Felix', pos:'ST' },
+    { num:'24', name:'Herrmann Charles-Jesaja', pos:'ST' },
+    { num:'25', name:'Ogbidi Theo', pos:'ST' },
+    { num:'26', name:'Yilmaz Ardahan', pos:'ST' },
+    { num:'29', name:'Gollnack Simon', pos:'ST' }
+  ];
+
+  /* Taktiktafel-Positionen (4-3-3). "bench:true" = Ersatzmarker am
+     Metallrand, sonst Feldposition. x/y sind SVG-Koordinaten innerhalb
+     der pitch-graphic-viewBox (0 0 340 520), 1:1 aus dem vorherigen
+     handgezeichneten Layout uebernommen. */
+  const BOARD = [
+    { num:'19', x:13, y:30,    bench:true },
+    { num:'5',  x:13, y:87.5,  bench:true },
+    { num:'28', x:13, y:145,   bench:true },
+    { num:'33', x:13, y:202.5, bench:true },
+    { num:'7',  x:13, y:260,   bench:true },
+    { num:'11', x:13, y:317.5, bench:true },
+    { num:'22', x:13, y:375,   bench:true },
+    { num:'23', x:13, y:432.5, bench:true },
+    { num:'29', x:13, y:490,   bench:true },
+    { num:'1',  x:170, y:453.4 },
+    { num:'3',  x:265, y:375.0 },
+    { num:'8',  x:105, y:280.9 },
+    { num:'20', x:202, y:380.2 },
+    { num:'27', x:75,  y:375.0 },
+    { num:'2',  x:138, y:380.2 },
+    { num:'6',  x:170, y:286.1 },
+    { num:'18', x:235, y:280.9 },
+    { num:'9',  x:95,  y:165.9 },
+    { num:'21', x:170, y:155.5 },
+    { num:'25', x:245, y:165.9 }
+  ];
+
+  function playerByNum(num){ return SQUAD.find(p => p.num === String(num)); }
+
+  /* Grobe, aber grosszuegige Breitenschaetzung fuer das Hover-Namensschild -
+     ersetzt die vorher von Hand pro Spieler eingestellten Pixelwerte. Nicht
+     pixelgenau, aber deckt jeden Namen sicher ab (lieber etwas Luft im
+     Label als abgeschnittener Text). */
+  function estimateLabelWidth(name){
+    return Math.max(100, Math.min(180, Math.round(name.length * 7.5 + 35)));
+  }
+
+  function renderBoard(){
+    const benchGroup = document.getElementById('benchMarkers');
+    const startGroup = document.getElementById('startMarkers');
+    if(!benchGroup || !startGroup) return;
+    let benchHTML = '', startHTML = '';
+    BOARD.forEach(slot => {
+      const p = playerByNum(slot.num);
+      if(!p) return;
+      const label = p.display || p.num;
+      const w = estimateLabelWidth(p.name);
+      if(slot.bench){
+        benchHTML += `
+            <g class="player-marker" data-num="${p.num}">
+              <circle cx="${slot.x}" cy="${slot.y}" r="11" fill="#13294b" stroke="#f2b705" stroke-width="1.6"/>
+              <text x="${slot.x}" y="${slot.y + 3.2}" text-anchor="middle" font-family="Oswald, sans-serif" font-size="9" fill="#f4f1ea">${label}</text>
+              <g class="player-name-label"><rect x="26" y="${slot.y - 8}" width="${w}" height="16" rx="3" fill="#0c1c33"/><text x="32" y="${slot.y + 3.2}" text-anchor="start" font-family="Oswald, sans-serif" font-size="9.5" fill="#f4f1ea">${p.name}</text></g>
+            </g>`;
+      } else {
+        const nameFontSize = p.name.length > 16 ? 9 : 10;
+        startHTML += `
+            <g class="player-marker" data-num="${p.num}">
+              <circle cx="${slot.x}" cy="${slot.y}" r="13" fill="#13294b" stroke="#f2b705" stroke-width="2"/>
+              <text x="${slot.x}" y="${slot.y + 4.5}" text-anchor="middle" font-family="Oswald, sans-serif" font-size="12.5" fill="#f4f1ea">${label}</text>
+              <g class="player-name-label"><rect x="${slot.x - w / 2}" y="${slot.y - 35}" width="${w}" height="16" rx="3" fill="#0c1c33"/><text x="${slot.x}" y="${slot.y - 24}" text-anchor="middle" font-family="Oswald, sans-serif" font-size="${nameFontSize}" fill="#f4f1ea">${p.name}</text></g>
+            </g>`;
+      }
+    });
+    benchGroup.innerHTML = benchHTML;
+    startGroup.innerHTML = startHTML;
+  }
+
+  function renderSquadList(){
+    const ul = document.querySelector('.squad-list');
+    if(!ul) return;
+    ul.innerHTML = SQUAD.map(p => `<li data-num="${p.num}"><span class="num">${p.display || p.num}</span><span class="name">${p.name}</span><span class="pos">${p.pos}</span></li>`).join('');
+  }
+
+  renderBoard();
+  renderSquadList();
+
 (function(){
   const intro = document.getElementById('intro');
   const page = document.getElementById('page');
@@ -1711,7 +1718,11 @@
 })();
 
 /* ---- Countdown auf der Hauptseite ----
-   Ziel: 1. FC Magdeburg II vs. SV Babelsberg 03, Anstoss Di 11.08.2026, 19:00 Uhr. ---- */
+   Ziel wird automatisch aus FIXTURES abgeleitet: der erste Eintrag ohne
+   "score" gilt als naechstes Spiel. Datum/Uhrzeit UND der Fixture-Text
+   ("X vs. Y") kommen beide aus diesem einen Eintrag - so muss bei einem
+   Spieltag-Wechsel nur noch FIXTURES gepflegt werden, nicht mehr zusaetzlich
+   der Countdown-Code und der HTML-Text separat. ---- */
 (function(){
   const els = {
     days:  document.getElementById('cd-days'),
@@ -1719,12 +1730,43 @@
     min:   document.getElementById('cd-min'),
     sec:   document.getElementById('cd-sec'),
   };
+  const fixtureEl = document.querySelector('.countdown-col .fixture');
+  const nextMatch = FIXTURES.find(f => !f.score);
+  if(!nextMatch) return;
+
+  /* Tabellen-Markierung (eigene Zeile blau, naechster Gegner rot) ebenfalls
+     aus nextMatch ableiten statt im HTML hart zu verdrahten - sonst genau
+     die gleiche Sync-Falle wie vorher beim Countdown-Datum. Exakter
+     Vergleich reicht, da Tabellennamen keine Klammerzusaetze mehr tragen. */
+  const opponent = nextMatch.home === SVB ? nextMatch.away : nextMatch.home;
+  document.querySelectorAll('.league-table tbody tr').forEach(row => {
+    row.classList.remove('highlight', 'highlight-opponent');
+    const teamCell = row.children[1];
+    if(!teamCell) return;
+    const teamText = teamCell.textContent.trim();
+    if(teamText === SVB) row.classList.add('highlight');
+    else if(teamText === opponent) row.classList.add('highlight-opponent');
+  });
+
+  if(fixtureEl){
+    fixtureEl.innerHTML = `${nextMatch.home} <span class="vs">vs.</span> ${nextMatch.away}`;
+  }
   if(!els.days) return;
 
-  // Monat ist 0-indiziert: 7 = August
-  const target = new Date(2026, 7, 11, 19, 0, 0);
-  function pad(n){ return String(n).padStart(2,'0'); }
+  function parseFixtureDateTime(f){
+    // f.date z.B. "Di 11.08." (Wochentag optional), f.month z.B. "August 2026"
+    const m = f.date.match(/(\d{2})\.(\d{2})\./);
+    if(!m) return null;
+    const day = parseInt(m[1], 10);
+    const month = parseInt(m[2], 10) - 1; // 0-indiziert
+    const year = parseInt(f.month.split(' ')[1], 10);
+    const [hh, mm] = (f.time || '00:00').split(':').map(Number);
+    return new Date(year, month, day, hh, mm, 0);
+  }
+  const target = parseFixtureDateTime(nextMatch);
+  if(!target) return;
 
+  function pad(n){ return String(n).padStart(2,'0'); }
   function tick(){
     const diff = Math.max(0, target - new Date());
     const days  = Math.floor(diff / 86400000);
@@ -1765,54 +1807,15 @@
 
 <script>
 /* ---------- POSTER-ZOOM (Spielplan / Spielberichte) ----------
-   Spielplan-Daten aus den vom Nutzer gelieferten Screenshots uebertragen
-   (Regionalliga Nordost, 34 Spieltage). Eine Annahme bleibt: fuer die
-   Rueckrunde ab Februar wurde der Jahreswechsel auf 2027 angenommen
-   (Screenshots zeigten dort kein Jahr). */
+   Nutzt SVB und FIXTURES, die oben im ersten <script>-Block zentral
+   definiert sind (als top-level const im gleichen Dokument-Scope sichtbar). */
 (function(){
   const modal = document.getElementById('posterModal');
   const backdrop = document.getElementById('posterModalBackdrop');
   const closeBtn = document.getElementById('posterModalClose');
   const content = document.getElementById('posterModalContent');
+  const panel = document.querySelector('.poster-modal-panel');
   if(!modal || !content) return;
-
-  const SVB = 'SV Babelsberg 03';
-  const FIXTURES = [
-    { month:'Juli 2026', date:'So 26.07.', home:'BSG Chemie Leipzig', away:SVB, score:'0:2', kicker:'https://www.kicker.de/chemie-leipzig-gegen-babelsberg-2026-regionalliga-nordost-5233596/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23568/auswartssieg-in-leutzsch', id:'chemie-leipzig' },
-    { month:'Juli 2026', date:'Fr 31.07.', home:SVB, away:'Carl Zeiss Jena', score:'0:1', kicker:'https://www.kicker.de/babelsberg-gegen-jena-2026-regionalliga-nordost-5233607/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23684/spater-gegentreffer-entscheidet-flutlichtduell-gegen-jena', id:'jena' },
-    { month:'August 2026', date:'Di 04.08.', home:SVB, away:'VSG Altglienicke', score:'2:2', kicker:'https://www.kicker.de/babelsberg-gegen-altglienicke-2026-regionalliga-nordost-5233611/spielbericht', verein:'https://www.babelsberg03.de/nachrichten/erste-herren/23746/spater-doppelschlag-verhindert-heimsieg-gegen-altglienicke', id:'altglienicke' },
-    { month:'August 2026', date:'Di 11.08.', home:'1. FC Magdeburg II', away:SVB, time:'19:00' },
-    { month:'August 2026', date:'Fr 14.08.', home:SVB, away:'RSV Eintracht', time:'19:00' },
-    { month:'August 2026', date:'Mi 26.08.', home:'Greifswalder FC', away:SVB, time:'19:00' },
-    { month:'August 2026', date:'Sa 29.08.', home:'FSV Zwickau', away:SVB, time:'16:00' },
-    { month:'September 2026', date:'Sa 12.09.', home:SVB, away:'Hallescher FC', time:'14:00' },
-    { month:'September 2026', date:'Mi 16.09.', home:'Chemnitzer FC', away:SVB, time:'19:00' },
-    { month:'September 2026', date:'Sa 19.09.', home:SVB, away:'Hertha BSC II', time:'14:00' },
-    { month:'September 2026', date:'So 27.09.', home:'FSV Luckenwalde', away:SVB, time:'14:00' },
-    { month:'Oktober 2026', date:'So 11.10.', home:SVB, away:'1. FC Lok Leipzig', time:'14:00' },
-    { month:'Oktober 2026', date:'So 18.10.', home:'Tasmania Berlin', away:SVB, time:'14:00' },
-    { month:'Oktober 2026', date:'So 25.10.', home:SVB, away:'BFC Preussen', time:'14:00' },
-    { month:'November 2026', date:'So 01.11.', home:'Rot-Weiß Erfurt', away:SVB, time:'14:00' },
-    { month:'November 2026', date:'So 08.11.', home:SVB, away:'BFC Dynamo', time:'14:00' },
-    { month:'November 2026', date:'So 22.11.', home:'Erzgebirge Aue', away:SVB, time:'14:00' },
-    { month:'November 2026', date:'So 29.11.', home:SVB, away:'BSG Chemie Leipzig', time:'14:00' },
-    { month:'Dezember 2026', date:'So 06.12.', home:'Carl Zeiss Jena', away:SVB, time:'14:00' },
-    { month:'Dezember 2026', date:'So 13.12.', home:'VSG Altglienicke', away:SVB, time:'14:00' },
-    { month:'Februar 2027', date:'So 14.02.', home:SVB, away:'1. FC Magdeburg II', time:'14:00' },
-    { month:'Februar 2027', date:'So 21.02.', home:'RSV Eintracht', away:SVB, time:'14:00' },
-    { month:'Februar 2027', date:'So 28.02.', home:SVB, away:'Greifswalder FC', time:'14:00' },
-    { month:'März 2027', date:'So 07.03.', home:SVB, away:'FSV Zwickau', time:'14:00' },
-    { month:'März 2027', date:'So 14.03.', home:'Hallescher FC', away:SVB, time:'14:00' },
-    { month:'März 2027', date:'So 21.03.', home:SVB, away:'Chemnitzer FC', time:'14:00' },
-    { month:'April 2027', date:'So 04.04.', home:'Hertha BSC II', away:SVB, time:'14:00' },
-    { month:'April 2027', date:'Mi 07.04.', home:SVB, away:'FSV Luckenwalde', time:'19:00' },
-    { month:'April 2027', date:'So 11.04.', home:'1. FC Lok Leipzig', away:SVB, time:'14:00' },
-    { month:'April 2027', date:'So 18.04.', home:SVB, away:'Tasmania Berlin', time:'14:00' },
-    { month:'April 2027', date:'So 25.04.', home:'BFC Preussen', away:SVB, time:'14:00' },
-    { month:'Mai 2027', date:'So 09.05.', home:SVB, away:'Rot-Weiß Erfurt', time:'14:00' },
-    { month:'Mai 2027', date:'So 16.05.', home:'BFC Dynamo', away:SVB, time:'14:00' },
-    { month:'Mai 2027', date:'So 23.05.', home:SVB, away:'Erzgebirge Aue', time:'14:00' }
-  ];
 
   function resultClass(f){
     if(!f.score) return '';
@@ -1902,12 +1905,14 @@
         <p class="report-own-label">Eigener Bericht</p>
         ${ownText
           ? `<div class="report-own-text">${ownText}</div>`
-          : `<p class="report-own-placeholder"><code>OWN_REPORTS['${f.id || '…'}']</code></p>`}
+          : (f.id
+              ? `<p class="report-own-placeholder"><code>OWN_REPORTS['${f.id}']</code></p>`
+              : `<p class="report-own-placeholder">Für dieses Spiel ist noch kein eigener Bericht vorbereitet.</p>`)}
       </div>
       <div class="report-nav">
-        <button class="report-nav-btn" id="reportPrev" ${reportIndex === 0 ? 'disabled' : ''}>&lsaquo; Zurück</button>
+        <button class="report-nav-btn" id="reportPrev" aria-label="Vorheriges Spiel" ${reportIndex === 0 ? 'disabled' : ''}>&larr;</button>
         <span class="report-counter">Spiel ${reportIndex + 1} / ${REPORTS.length}</span>
-        <button class="report-nav-btn" id="reportNext" ${reportIndex === REPORTS.length - 1 ? 'disabled' : ''}>Weiter &rsaquo;</button>
+        <button class="report-nav-btn" id="reportNext" aria-label="Nächstes Spiel" ${reportIndex === REPORTS.length - 1 ? 'disabled' : ''}>&rarr;</button>
       </div>
       <div class="report-search">
         <span class="report-search-label">Gegner suchen:</span>
@@ -1920,8 +1925,8 @@
     const nextBtn = document.getElementById('reportNext');
     const searchBtn = document.getElementById('reportSearchBtn');
     const searchInput = document.getElementById('reportSearchInput');
-    if(prevBtn) prevBtn.addEventListener('click', () => { reportIndex--; renderReport(); });
-    if(nextBtn) nextBtn.addEventListener('click', () => { reportIndex++; renderReport(); });
+    if(prevBtn) prevBtn.addEventListener('click', () => goReport(-1));
+    if(nextBtn) nextBtn.addEventListener('click', () => goReport(1));
     function runSearch(){
       const q = searchInput.value.trim().toLowerCase();
       if(!q) return;
@@ -1934,7 +1939,10 @@
     if(searchInput) searchInput.addEventListener('keydown', e => { if(e.key === 'Enter') runSearch(); });
   }
 
+  let currentPosterType = null;
+
   function openPoster(type){
+    currentPosterType = type;
     if(type === 'spielberichte'){
       reportIndex = 0;
       renderReport();
@@ -1947,14 +1955,64 @@
   function closePoster(){
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
+    currentPosterType = null;
   }
+
+  /* Scroll (Mausrad/Trackpad) und Touch-Swipe zum Vor-/Zurueckblaettern
+     zwischen den Spielberichten - zusaetzlich zu den Pfeil-Buttons. Ein
+     Cooldown verhindert, dass ein einzelnes Trackpad-Scrollgesten-"Rauschen"
+     gleich mehrere Seiten ueberspringt. */
+  let wheelCooldown = false;
+  function goReport(direction){
+    if(direction > 0 && reportIndex < REPORTS.length - 1){ reportIndex++; renderReport(); }
+    else if(direction < 0 && reportIndex > 0){ reportIndex--; renderReport(); }
+  }
+  content.addEventListener('wheel', e => {
+    if(currentPosterType !== 'spielberichte' || wheelCooldown) return;
+    // Wenn das Panel selbst scrollen muss (z.B. sehr niedriges Browserfenster),
+    // normales Scrollen zulassen statt jede Bewegung als Seitenwechsel zu
+    // interpretieren - sonst kommt man an den unteren Teil des Inhalts nicht mehr ran.
+    if(panel && panel.scrollHeight > panel.clientHeight) return;
+    const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if(Math.abs(delta) < 25) return;
+    e.preventDefault();
+    wheelCooldown = true;
+    setTimeout(() => { wheelCooldown = false; }, 400);
+    goReport(delta > 0 ? -1 : 1);
+  }, { passive: false });
+
+  let touchStartX = null;
+  content.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  content.addEventListener('touchend', e => {
+    if(currentPosterType !== 'spielberichte' || touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    touchStartX = null;
+    if(Math.abs(dx) < 40) return;
+    goReport(dx < 0 ? 1 : -1);
+  });
 
   document.querySelectorAll('.poster-thumb').forEach(btn => {
     btn.addEventListener('click', () => openPoster(btn.dataset.poster));
   });
   backdrop.addEventListener('click', closePoster);
   closeBtn.addEventListener('click', closePoster);
-  document.addEventListener('keydown', e => { if(e.key === 'Escape') closePoster(); });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){ closePoster(); return; }
+    if(!currentPosterType) return;
+    // Wenn gerade ein Eingabefeld (z.B. das Gegner-Suchfeld) den Fokus hat,
+    // sollen Pfeiltasten normal den Cursor bewegen statt Seiten zu blaettern
+    // oder das Panel zu scrollen.
+    const tag = document.activeElement && document.activeElement.tagName;
+    if(tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if(currentPosterType === 'spielplan' && (e.key === 'ArrowUp' || e.key === 'ArrowDown')){
+      e.preventDefault();
+      if(panel) panel.scrollTop += e.key === 'ArrowDown' ? 80 : -80;
+      return;
+    }
+    if(currentPosterType !== 'spielberichte') return;
+    if(e.key === 'ArrowRight'){ e.preventDefault(); goReport(1); }
+    else if(e.key === 'ArrowLeft'){ e.preventDefault(); goReport(-1); }
+  });
 })();
 </script>
 
